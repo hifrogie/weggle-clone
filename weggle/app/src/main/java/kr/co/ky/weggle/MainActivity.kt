@@ -2,6 +2,7 @@ package kr.co.ky.weggle
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -11,7 +12,6 @@ import kr.co.ky.weggle.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(),   NavigationBarView.OnItemSelectedListener{
     private lateinit var binding: ActivityMainBinding
-
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
 
         when (p0.itemId) {
@@ -19,12 +19,14 @@ class MainActivity : AppCompatActivity(),   NavigationBarView.OnItemSelectedList
                 val homeFragment = HomeFragment()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, homeFragment).commit()
+                binding.toolbarTitle.setText("weggle")
                 return true
             }
             R.id.brand -> {
                 val brandFragment = BrandFragment()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, brandFragment).commit()
+                binding.toolbarTitle.setText("브랜드관")
                 return true
             }
             R.id.video -> {
@@ -37,12 +39,14 @@ class MainActivity : AppCompatActivity(),   NavigationBarView.OnItemSelectedList
                 val wegglerBlankFragment = WegglerBlankFragment()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, wegglerBlankFragment).commit()
+                binding.toolbarTitle.setText("위글러")
                 return true
             }
             R.id.my -> {
                 val myFragment = MyFragment()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, myFragment).commit()
+                binding.toolbarTitle.setText("마이")
                 return true
             }
 
@@ -61,6 +65,8 @@ class MainActivity : AppCompatActivity(),   NavigationBarView.OnItemSelectedList
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
 
         fragmentTransaction.replace(R.id.frame, WegglerBlankFragment()).commit()
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
 }
