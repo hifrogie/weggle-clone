@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity(),
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         frManger = this@MainActivity.supportFragmentManager
         setSupportActionBar(binding.mainView.mainToolbar.mainLayoutToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) //홈 버튼 활성화
@@ -66,7 +67,6 @@ class MainActivity : AppCompatActivity(),
         when(item.itemId){
             android.R.id.home->{ //menu selected
                 binding.drawLayout.openDrawer(GravityCompat.START) //left
-
             }
         }
         return super.onOptionsItemSelected(item)

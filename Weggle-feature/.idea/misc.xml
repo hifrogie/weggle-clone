@@ -3,6 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable-v24/circle.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable-v24/round_border.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_baseline_business_center_24.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_baseline_person_outline_24.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_baseline_podcasts_24.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_iconmonstr_coin_8.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_iconmonstr_delivery_2.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_iconmonstr_user_circle_thin.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2255" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/layout/activity_main.xml" value="0.12132725430597771" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/layout/fragment_brand.xml" value="0.12132725430597771" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/layout/fragment_home.xml" value="0.1099290780141844" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/layout/fragment_my.xml" value="0.12132725430597771" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/layout/fragment_weggle.xml" value="0.12132725430597771" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/layout/fragment_weggler.xml" value="0.1099290780141844" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/layout/main_layout.xml" value="0.1099290780141844" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/layout/main_toolbar.xml" value="0.1286231884057971" />
+        <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/Weggle-feature/app/src/main/res/layout/navigation_inner.xml" value="0.1286231884057971" />
         <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/weggle/app/src/main/res/drawable-v24/circle.xml" value="0.1" />
         <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/weggle/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/jinwo/desktopss/codingJM/AndroidStudioProjects/weggle-clone/weggle/app/src/main/res/drawable-v24/round_border.xml" value="0.1" />
