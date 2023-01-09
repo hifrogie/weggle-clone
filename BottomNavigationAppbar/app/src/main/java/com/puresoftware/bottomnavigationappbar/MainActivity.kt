@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import androidx.core.view.GravityCompat
 import androidx.core.view.get
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -20,7 +21,7 @@ import com.puresoftware.bottomnavigationappbar.brands.BrandsFragment
 import com.puresoftware.bottomnavigationappbar.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var  binding: ActivityMainBinding
     // fragment
     // https://aries574.tistory.com/382
     var homeFragment: HomeFragment? = null // 홈
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // toolbar control
@@ -154,6 +155,8 @@ class MainActivity : AppCompatActivity() {
         when (item?.itemId) {
             android.R.id.home -> {
                 Log.d(TAG, "드로블메뉴")
+                //드로어블 사이드
+                binding.drawLayout.openDrawer(GravityCompat.START) //left
                 return true
             }
             R.id.search -> {
