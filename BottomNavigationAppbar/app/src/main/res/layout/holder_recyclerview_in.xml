@@ -18,16 +18,18 @@
         <!--상품 Image-->
         <ImageView
             android:id="@+id/iv_brands_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_width="210dp"
+            android:layout_height="210dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            tools:srcCompat="@drawable/weggle" />
 
         <!--상품 회사명-->
         <TextView
             android:id="@+id/tv_brands_company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(주)회사명"
+            android:text="@{model.company}"
             android:textColor="#999999" />
 
         <!--상품 제목-->
@@ -35,7 +37,7 @@
             android:id="@+id/tv_brands_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[특가]제품명"
+            android:text="@{model.content}"
             android:textColor="#333333"
             android:textSize="16sp" />
 
@@ -50,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="100"
+                android:text="@{model.discount}"
                 android:textColor="#FF0066"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -60,7 +62,7 @@
                 android:id="@+id/tv_brands_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100,000"
+                android:text="@{model.price}"
                 android:textColor="#333333"
                 android:textSize="16sp" />
         </LinearLayout>

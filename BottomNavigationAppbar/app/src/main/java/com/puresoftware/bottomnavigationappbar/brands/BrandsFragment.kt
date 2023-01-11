@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.databinding.BrandsFragmentBinding
 
+
+// overlapRecyclerView https://kimyunseok.tistory.com/130
 class BrandsFragment : Fragment() {
 
     lateinit var binding: BrandsFragmentBinding
@@ -37,51 +39,58 @@ class BrandsFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         var itemList = mutableListOf(
+
             RecyclerOutViewModel(
-                "포유류", mutableListOf(
-                    RecyclerInViewModel("🐶", "강아지", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🐱", "고양이", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🐳", "고래", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🦒", "사슴", "10000", "10000", "10000")
-                )
+                "(주)동아오츠카",
+                "https://www.tfmedia.co.kr/data/photos/20180206/art_1518167665291_023679.jpg",
+                mutableListOf(
+                    RecyclerInViewModel(
+                        "https://file.pickydiet.co.kr/image/PIKI/PRODUCT/PRD001/20221011/e11f8455a533009eb142221d3fd33021_600_600.jpg",
+                        "(주)동아오츠카",
+                        "포카리스웨트",
+                        "50%",
+                        "2,500"
+                    ),
+                    RecyclerInViewModel(
+                        "https://scontent-gmp1-1.xx.fbcdn.net/v/t1.6435-9/57410715_1522986887836272_8472824990050287616_n.jpg?stp=cp0_dst-jpg_e15_p320x320_q65&_nc_cat=102&ccb=1-7&_nc_sid=110474&_nc_ohc=SJ3W1Ctugp0AX-prAT3&_nc_ht=scontent-gmp1-1.xx&oh=00_AfBWZHAoFBl_wHufwgBg18HLDE49KikMpfrw3cuWGNvrLA&oe=63E63688",
+                        "(주)동아오츠카",
+                        "이온워터",
+                        "25%",
+                        "1,500"
+                    ),
+                    RecyclerInViewModel(
+                        "https://st.kakaocdn.net/thumb/P750x750/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fshoppingstore%2Fproduct%2F20220712071655_f0d1d0536da24bed89a4eb65a7cc82e4.png",
+                        "(주)동아오츠카",
+                        "마신다",
+                        "70%",
+                        "350"
+                    ),
+                ),
             ),
 
             RecyclerOutViewModel(
-                "조류", mutableListOf(
-                    RecyclerInViewModel("🦅", "독수리", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🕊️", "비둘기", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🦉", "부엉이", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🐔", "닭", "10000", "10000", "10000")
-                )
-            ),
-
-            RecyclerOutViewModel(
-                "어류", mutableListOf(
-                    RecyclerInViewModel("🐟", "홍어", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🐟", "광어", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🐟", "연어", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🐟", "우럭", "10000", "10000", "10000")
-                )
-            ),
-
-            RecyclerOutViewModel(
-                "파충류", mutableListOf(
-                    RecyclerInViewModel("🐊", "악어", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🦎", "카멜레온", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🦎", "도마뱀", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🐍", "뱀", "10000", "10000", "10000")
-                )
-            ),
-
-            RecyclerOutViewModel(
-                "양서류", mutableListOf(
-                    RecyclerInViewModel("🐸", "개구리", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🦎", "도룡뇽", "10000", "10000", "10000"),
-                    RecyclerInViewModel("🐸", "두꺼비", "10000", "10000", "10000")
-                )
+                "농심",
+                "https://thumb.mt.co.kr/06/2017/07/2017071314130890218_2.jpg/dims/optimize/",
+                mutableListOf(
+                    RecyclerInViewModel(
+                        "https://sitem.ssgcdn.com/79/44/63/item/0000008634479_i2_550.jpg",
+                        "농심",
+                        "신라면 1BOX",
+                        "50%",
+                        "2,500"
+                    ),
+                    RecyclerInViewModel(
+                        "https://static.megamart.com/product/image/1346/13464110/13464110_1_960.jpg",
+                        "농심",
+                        "새우깡",
+                        "10%",
+                        "1,500"
+                    ),
+                ),
             ),
         )
         binding.outRecyclerview.adapter = OutRecyclerViewAdapter(requireContext(), itemList)
         binding.outRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+
     }
 }

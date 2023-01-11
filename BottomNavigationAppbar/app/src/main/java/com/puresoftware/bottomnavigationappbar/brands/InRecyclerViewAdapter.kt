@@ -12,6 +12,9 @@ import com.puresoftware.bottomnavigationappbar.databinding.HolderRecyclerviewInB
 class InRecyclerViewAdapter(context: Context, val itemList: MutableList<RecyclerInViewModel>) :
     RecyclerView.Adapter<InRecyclerViewAdapter.Holder>() {
 
+    val context = context
+    val TAG: String = InRecyclerViewAdapter::class.java.simpleName
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding =
             HolderRecyclerviewInBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -19,12 +22,9 @@ class InRecyclerViewAdapter(context: Context, val itemList: MutableList<Recycler
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val item = itemList[position]
 
-        val context = holder.itemView.context
-        Log.i("asdf", item.image)
-        holder.binding.ivBrandsItem.setImageResource(R.drawable.wegglecircle)
-        Glide.with(context).load("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory&fname=https://k.kakaocdn.net/dn/EShJF/btquPLT192D/SRxSvXqcWjHRTju3kHcOQK/img.png")
+        val item = itemList[position] // item을 가져옴
+        Glide.with(context).load(item.image) // glide 사용
             .into(holder.binding.ivBrandsItem)
 
         holder.bind(item)
