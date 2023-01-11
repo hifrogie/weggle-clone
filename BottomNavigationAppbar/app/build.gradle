@@ -30,8 +30,13 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    viewBinding{
+    viewBinding {
         enabled = true
+    }
+
+    // recyclerView 중첩을 위해 사용함.
+    buildFeatures {
+        dataBinding = true
     }
 }
 
