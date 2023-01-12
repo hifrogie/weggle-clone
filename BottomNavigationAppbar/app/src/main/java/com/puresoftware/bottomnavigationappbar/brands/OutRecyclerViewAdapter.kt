@@ -30,7 +30,6 @@ class OutRecyclerViewAdapter(
 
         Glide.with(context).load(item.main) // glide 사용
             .into(holder.binding.ivBrandsFullImage)
-
         holder.bind(item)
     }
 

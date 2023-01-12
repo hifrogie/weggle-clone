@@ -1,9 +1,12 @@
 package com.puresoftware.bottomnavigationappbar.brands
 
 import android.content.Context
+import android.graphics.Outline
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.puresoftware.bottomnavigationappbar.R
@@ -28,6 +31,8 @@ class InRecyclerViewAdapter(context: Context, val itemList: MutableList<Recycler
             .into(holder.binding.ivBrandsItem)
 
         holder.bind(item)
+
+
     }
 
     override fun getItemCount(): Int {
@@ -38,6 +43,7 @@ class InRecyclerViewAdapter(context: Context, val itemList: MutableList<Recycler
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RecyclerInViewModel) {
             binding.model = item
+
         }
     }
 
