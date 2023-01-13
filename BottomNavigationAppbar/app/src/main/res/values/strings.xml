@@ -18,4 +18,10 @@
     <!-- brands의 MainViewPager 아래에 있는 숫자 -->
     <string name="viewpager2_banner">%1$d/%2$d</string>
 
+    <!-- my_account-->
+    <string name="shap">#인테리어</string>
+    <string name="my_info">자기소개</string>
+    <string name="post_context">게시물</string>
+    <string name="follower">팔로워</string>
+    <string name="following">팔로잉</string>
 </resources>
