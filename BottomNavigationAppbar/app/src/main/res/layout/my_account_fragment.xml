@@ -162,7 +162,8 @@
         android:src="@drawable/ic_pencil"
         android:backgroundTint="@color/black"
         app:tint="@null"
-        android:layout_margin="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

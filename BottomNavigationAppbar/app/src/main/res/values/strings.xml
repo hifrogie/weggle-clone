@@ -24,4 +24,6 @@
     <string name="post_context">게시물</string>
     <string name="follower">팔로워</string>
     <string name="following">팔로잉</string>
+    <string name="review_write">리뷰 작성</string>
+    <string name="challenge_write">챌린지 등록</string>
 </resources>
