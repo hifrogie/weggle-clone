@@ -234,4 +234,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:layout_gravity="bottom"/>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="500dp"-->
+<!--        android:background="@color/white"-->
+<!--        android:layout_gravity="bottom">-->
+<!--        -->
+<!--    </LinearLayout>-->
+<!--        android:visibility="invisible"-->
 </FrameLayout>
