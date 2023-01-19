@@ -32,7 +32,6 @@ class InRecyclerViewAdapter(context: Context, val itemList: MutableList<Recycler
 
         holder.bind(item)
 
-
     }
 
     override fun getItemCount(): Int {

@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.puresoftware.bottomnavigationappbar.databinding.HomeFragmentBinding
 import com.smarteist.autoimageslider.SliderView
 
@@ -18,30 +20,35 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-//        val view: View = inflater.inflate(R.layout.home_fragment, container, false)
         binding = HomeFragmentBinding.inflate(inflater, container, false)
+//        이미지 슬라이더
         sliderView = binding.slider
 
         imageUrl = ArrayList()
-
         // on below line we are adding data to our image url array list.
         imageUrl =
-            (imageUrl + "https://practice.geeksforgeeks.org/_next/image?url=https%3A%2F%2Fmedia.geeksforgeeks.org%2Fimg-practice%2Fbanner%2Fdsa-self-paced-thumbnail.png&w=1920&q=75") as ArrayList<String>
+            (imageUrl + "https://newsimg.sedaily.com/2022/02/03/261ZXAMLN9_1.jpg") as ArrayList<String>
         imageUrl =
-            (imageUrl + "https://practice.geeksforgeeks.org/_next/image?url=https%3A%2F%2Fmedia.geeksforgeeks.org%2Fimg-practice%2Fbanner%2Fdata-science-live-thumbnail.png&w=1920&q=75") as ArrayList<String>
+            (imageUrl + "http://www.happypet.co.kr/news/photo/202201/0004565570_5186931_article.jpg") as ArrayList<String>
         imageUrl =
-            (imageUrl + "https://practice.geeksforgeeks.org/_next/image?url=https%3A%2F%2Fmedia.geeksforgeeks.org%2Fimg-practice%2Fbanner%2Ffull-stack-node-thumbnail.png&w=1920&q=75") as ArrayList<String>
+            (imageUrl + "http://m.segyebiz.com/content/image/2021/10/27/20211027515262.jpg") as ArrayList<String>
 
         sliderAdapter = SliderAdapter(imageUrl)
         sliderView.autoCycleDirection = SliderView.LAYOUT_DIRECTION_LTR
         sliderView.setSliderAdapter(sliderAdapter)
-        sliderView.scrollTimeInSec = 3
+        sliderView.scrollTimeInSec = 4
 
         sliderView.isAutoCycle = true
 
         sliderView.startAutoCycle()
         Log.i("Song", "HomeFragment start")
 
+//        리사이클러뷰
+        val adapter = ItemRecyclerAdapter(ItemList.itemList)
+        binding?.recentProductRv?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.recentProductRv?.adapter = adapter
+
         return binding.root
     }
+
 }

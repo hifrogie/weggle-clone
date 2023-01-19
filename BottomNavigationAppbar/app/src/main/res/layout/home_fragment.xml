@@ -1,36 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginTop="?attr/actionBarSize"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
-    <com.smarteist.autoimageslider.SliderView
-        android:id="@+id/slider"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:sliderAnimationDuration="300"
-        app:sliderIndicatorAnimationDuration="600"
-        app:sliderIndicatorEnabled="true"
-        app:sliderIndicatorGravity="center_horizontal|bottom"
-        app:sliderAutoCycleDirection="back_and_forth"
-        app:sliderIndicatorMargin="15dp"
-        app:sliderIndicatorOrientation="horizontal"
-        app:sliderIndicatorPadding="3dp"
-        app:sliderIndicatorRadius="2dp"
-        app:sliderIndicatorSelectedColor="#5A5A5A"
-        app:sliderIndicatorUnselectedColor="#FFF"
-        app:sliderScrollTimeInSec="2" />
+        <com.smarteist.autoimageslider.SliderView
+            android:id="@+id/slider"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:sliderAnimationDuration="300"
+            app:sliderAutoCycleDirection="back_and_forth"
+            app:sliderIndicatorAnimationDuration="600"
+            app:sliderIndicatorEnabled="true"
+            app:sliderIndicatorGravity="center_horizontal|bottom"
+            app:sliderIndicatorMargin="15dp"
+            app:sliderIndicatorOrientation="horizontal"
+            app:sliderIndicatorPadding="3dp"
+            app:sliderIndicatorRadius="2dp"
+            app:sliderIndicatorSelectedColor="#5A5A5A"
+            app:sliderIndicatorUnselectedColor="#FFF"
+            app:sliderScrollTimeInSec="2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackground"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/itemTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/btnMore"
+                        android:text="최근 본 상품"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/itemTitle"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="눈여겨본 상품 놓치지 마세요" />
+
+                    <Button
+                        android:id="@+id/btnMore"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/ic_baseline_arrow_forward_ios_24"
+                        android:textColor="#FFF" />
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recentProductRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackground"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/itemTitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/btnMore2"
+                        android:text="성공임박 공동구매"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/itemTitle2"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="서두르세요 마지막 한명!" />
+
+                    <Button
+                        android:id="@+id/btnMore2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/ic_baseline_arrow_forward_ios_24"
+                        android:textColor="#FFF" />
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/soCloseRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
