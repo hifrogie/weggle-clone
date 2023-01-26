@@ -8,9 +8,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
+//http://dev-api.kooru.be/swagger-ui/index.html#/
+
 class WegglerApplication : Application() {
     lateinit var service: WegglerRetrofitService
-    val baseUrl = ""
+    private val baseUrl = "http://dev-api.kooru.be/api/v1"
     override fun onCreate() {
         super.onCreate()
         Stetho.initializeWithDefaults(this)
