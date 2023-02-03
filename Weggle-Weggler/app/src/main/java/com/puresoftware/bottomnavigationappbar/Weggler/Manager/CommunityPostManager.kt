@@ -1,8 +1,12 @@
 package com.puresoftware.bottomnavigationappbar.Weggler.Manager
 
-import android.util.Log
-import com.puresoftware.bottomnavigationappbar.Weggler.Model.Community
+import android.app.Activity
+import android.net.Uri
+import com.puresoftware.bottomnavigationappbar.Weggler.Model.CommunityContent
+import com.puresoftware.bottomnavigationappbar.Weggler.Model.CommunityList
+import com.puresoftware.bottomnavigationappbar.Weggler.Model.MultiCommunityData
 import com.puresoftware.bottomnavigationappbar.Weggler.Server.WegglerApplication
+import com.puresoftware.bottomnavigationappbar.Weggler.ViewModel.MultiPartViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,10 +17,10 @@ class CommunityPostManager (
     private val masterApp = masterApplication
 
     //전체 post list 얻기
-    fun getCommunityPostList(page:Int,size:Int,paramFunc:(Community?)->Unit){
-        masterApp.service.getCommunityPostList(page,size)
-            .enqueue(object : Callback<Community>{
-                override fun onResponse(call: Call<Community>, response: Response<Community>) {
+    fun getCommunityPostList(page:Int,sort:List<String>,paramFunc:(CommunityList?)->Unit){
+        masterApp.service.getCommunityPostList(page,null,sort)
+            .enqueue(object : Callback<CommunityList>{
+                override fun onResponse(call: Call<CommunityList>, response: Response<CommunityList>) {
                     if(response.isSuccessful){
                         paramFunc(response.body())
                     }else{
@@ -24,13 +28,40 @@ class CommunityPostManager (
                     }
                 }
 
-                override fun onFailure(call: Call<Community>, t: Throwable) {
+                override fun onFailure(call: Call<CommunityList>, t: Throwable) {
                     paramFunc(null)
                 }
 
             })
     }
 
-    //community 데이터 전송
+    //인기 post list 얻기
+    fun getPopularCommunityPostList(size: Int,sort:List<String>,paramFunc: (CommunityList?) -> Unit){
+        masterApp.service.getCommunityPostList(null,size,sort)
+            .enqueue(object :Callback<CommunityList>{
+                override fun onResponse(
+                    call: Call<CommunityList>,
+                    response: Response<CommunityList>
+                ) {
+                    if (response.isSuccessful){
+                        paramFunc(response.body())
+                    }else {
+                        paramFunc(null)
+                    }
+                }
 
+                override fun onFailure(call: Call<CommunityList>, t: Throwable) {
+                    paramFunc(null)
+                }
+
+            })
+    }
+
+    fun addCommunityData(multiCommunityData: MultiCommunityData, filePath: Uri?,
+                         activity: Activity, paramFunc: (CommunityContent?) -> Unit){
+        MultiPartViewModel().uploadCommunityPoster(multiCommunityData,filePath, activity,
+            paramFunc = {
+            paramFunc(it)
+        })
+    }
 }

@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context="com.puresoftware.bottomnavigationappbar.Weggler.MidFragment.CommunityFragment">
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -102,6 +101,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_15"
             android:layout_margin="@dimen/margin_10"
             android:orientation="horizontal">
 
@@ -122,12 +122,11 @@
             android:background="@color/line_color" />
 
         <LinearLayout
-            android:layout_margin="@dimen/margin_10"
+            android:layout_margin="@dimen/margin_15"
             android:orientation="vertical"
             android:id="@+id/popular_post_box"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <!--게시물 인기 순에서 상위 2개씩 뽑기 (공구 ,프리)-->
+            android:layout_height="@dimen/top_len_300">
             <LinearLayout
                 android:layout_marginTop="@dimen/margin_5"
                 android:layout_marginBottom="@dimen/margin_20"
@@ -153,43 +152,14 @@
                     app:tint="@color/black" />
             </LinearLayout>
 
-            <LinearLayout
-                style="@style/popularPost"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pop_list"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/item_size_60">
-                <TextView
-                    style="@style/popularTextType1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-            <LinearLayout
-                style="@style/popularPost"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/item_size_60">
-                <TextView
-                    style="@style/popularTextType1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-            <LinearLayout
-                style="@style/popularPost"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/item_size_60">
-                <TextView
-                    style="@style/popularTextType2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-            <LinearLayout
-                style="@style/popularPost"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/item_size_60">
-                <TextView
-                    style="@style/popularTextType2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_mini_community_popular"
+                tools:itemCount="4"
+                />
 
         </LinearLayout>
 
@@ -202,19 +172,18 @@
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/add_button"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:layout_marginTop="@dimen/top_len_80"
+                android:layout_marginEnd="@dimen/margin_15"
+                android:layout_marginBottom="@dimen/margin_30"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:src="@drawable/ic_baseline_add_circle_24"
                 android:elevation="@dimen/margin_10"
                 android:backgroundTint="@android:color/transparent"
                 android:layout_width="@dimen/item_size_60"
                 android:layout_height="@dimen/item_size_60"/>
-            <androidx.recyclerview.widget.RecyclerView
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:orientation="vertical"
-                tools:listitem="@layout/item_community_small_free"
+            <FrameLayout
+                android:layout_margin="@dimen/margin_5"
+                android:id="@+id/total_com_list_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
