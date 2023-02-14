@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.databinding.BrandsFragmentBinding
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Math.ceil
 
 
@@ -41,10 +43,21 @@ class BrandsFragment : Fragment() {
         setUpMainViewPager() // MainViewPager
         setUpRecyclerView() // Recycler
 
-        Log.i(TAG, "oncreateView launched")
+        Log.i("asdf", "oncreateView launched")
 
         return binding.root
     }
+
+    fun setUpRetrofit() {
+        val retrofit: Retrofit = Retrofit.Builder().baseUrl("http://dev-api.kooru.be/api/v1")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+
+        val apiService: ApiService =retrofit.create(ApiService::class.java)
+
+
+
+    }
+
 
     // main에 들어갈 ViewPager
     private fun setUpMainViewPager() {
@@ -125,7 +138,7 @@ class BrandsFragment : Fragment() {
 
             RecyclerOutViewModel(
                 "(주)동아오츠카",
-                "https://www.tfmedia.co.kr/data/photos/20180206/art_1518167665291_023679.jpg",
+                "https://archive.org/download/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4",
                 mutableListOf(
                     RecyclerInViewModel(
                         "https://file.pickydiet.co.kr/image/PIKI/PRODUCT/PRD001/20221011/e11f8455a533009eb142221d3fd33021_600_600.jpg",
@@ -148,7 +161,21 @@ class BrandsFragment : Fragment() {
                         "70%",
                         "350"
                     ),
-                ),
+                    RecyclerInViewModel(
+                        "https://st.kakaocdn.net/thumb/P750x750/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fshoppingstore%2Fproduct%2F20220712071655_f0d1d0536da24bed89a4eb65a7cc82e4.png",
+                        "(주)동아오츠카",
+                        "마신다2",
+                        "70%",
+                        "3330"
+                    ),
+                    RecyclerInViewModel(
+                        "https://st.kakaocdn.net/thumb/P750x750/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fshoppingstore%2Fproduct%2F20220712071655_f0d1d0536da24bed89a4eb65a7cc82e4.png",
+                        "(주)동아오츠카",
+                        "마신다3",
+                        "710%",
+                        "3250"
+                    ),
+                ), "video"
             ),
 
             RecyclerOutViewModel(
@@ -169,12 +196,11 @@ class BrandsFragment : Fragment() {
                         "10%",
                         "1,500"
                     ),
-                ),
+                ), "image"
             ),
         )
         binding.outRecyclerview.adapter = OutRecyclerViewAdapter(requireContext(), itemList)
         binding.outRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-
     }
 }
 
