@@ -45,18 +45,11 @@ class BrandsFragment : Fragment() {
 
         Log.i("asdf", "oncreateView launched")
 
+        val retrofitApi =
+
         return binding.root
     }
 
-    fun setUpRetrofit() {
-        val retrofit: Retrofit = Retrofit.Builder().baseUrl("http://dev-api.kooru.be/api/v1")
-            .addConverterFactory(GsonConverterFactory.create()).build()
-
-        val apiService: ApiService =retrofit.create(ApiService::class.java)
-
-
-
-    }
 
 
     // main에 들어갈 ViewPager
