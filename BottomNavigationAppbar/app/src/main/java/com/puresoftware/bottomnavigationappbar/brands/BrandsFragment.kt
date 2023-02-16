@@ -48,6 +48,7 @@ class BrandsFragment : Fragment() {
 //        val retrofitApi = RetrofitInstance()
         // git commit test
         // commit
+        // shit
 
         return binding.root
     }
