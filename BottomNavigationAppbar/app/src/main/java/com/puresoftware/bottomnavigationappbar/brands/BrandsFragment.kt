@@ -46,6 +46,7 @@ class BrandsFragment : Fragment() {
         Log.i("asdf", "oncreateView launched")
 
 //        val retrofitApi = RetrofitInstance()
+        // git commit test
 
         return binding.root
     }
