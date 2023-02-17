@@ -19,6 +19,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.databinding.BrandsFragmentBinding
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Math.ceil
@@ -45,14 +50,10 @@ class BrandsFragment : Fragment() {
 
         Log.i("asdf", "oncreateView launched")
 
-//        val retrofitApi = RetrofitInstance()
-        // git commit test
-        // commit
-        // shit
+        var retrofitInstance = RetrofitInstance().retrofit()
 
         return binding.root
     }
-
 
 
     // main에 들어갈 ViewPager
