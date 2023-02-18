@@ -2,11 +2,13 @@ package com.puresoftware.bottomnavigationappbar.MyAccount
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import com.kakao.sdk.common.util.Utility.getKeyHash
 import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.databinding.MyAccountFragmentBinding
 import java.util.zip.Inflater

@@ -1,5 +1,6 @@
 package com.puresoftware.bottomnavigationappbar.brands
 
+
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,11 +12,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.databinding.BrandsFragmentBinding
@@ -26,7 +25,7 @@ import java.lang.Math.ceil
 // auto scroll https://bumjae.tistory.com/65
 class BrandsFragment : Fragment() {
 
-    lateinit var binding: BrandsFragmentBinding
+    private lateinit var binding: BrandsFragmentBinding
     private var bannerPosition = 0 // 무한 Scroll 기본값...
     var vpHandler: Handler? = null
 
@@ -172,8 +171,8 @@ class BrandsFragment : Fragment() {
                 ),
             ),
         )
-        binding.outRecyclerview.adapter = OutRecyclerViewAdapter(requireContext(), itemList)
-        binding.outRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+//        binding.outRecyclerview.adapter = OutRecyclerViewAdapter(requireContext(), itemList)
+//        binding.outRecyclerview.layoutManager = LinearLayoutManager(requireContext())
 
     }
 }
