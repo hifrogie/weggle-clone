@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">BottomNavigationAppbar</string>
+
+    <!-- video -->
+    <string name="whole">전체</string>
+    <string name="seperate_line">|</string>
+    <string name="brand">브랜드관</string>
+    <string name="together_buy">공동구매</string>
+    <string name="number">0</string>
+    <string name="review">리뷰</string>
+    <string name="nickname">닉네임</string>
+    <string name="title">제목</string>
+    <string name="percent">22%</string>
+    <string name="price">21,000원</string>
+    <string name="video_nickname_category">식품</string>
+    <string name="month">1개월 전</string>
+
+    <!-- brands의 MainViewPager 아래에 있는 숫자 -->
+    <string name="viewpager2_banner">%1$d/%2$d</string>
+
 </resources>
