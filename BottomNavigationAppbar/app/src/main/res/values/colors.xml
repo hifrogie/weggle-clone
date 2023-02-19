@@ -8,4 +8,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="line_color">#D3CDCD</color>
+    <color name="light_grey">#EFECEC</color>
+    <color name="theme_pink">#FA0AEE</color>
+    <color name="background_pink">#F1A1ED</color>
+    <color name="grey">#807B7B</color>
+    <color name="kakao">#F7E600</color>
+    <color name="naver">#2DB400</color>
+>>>>>>> 72e2a4a2c7e4bbfeb52cfd24160a94338cb1593f
 </resources>
