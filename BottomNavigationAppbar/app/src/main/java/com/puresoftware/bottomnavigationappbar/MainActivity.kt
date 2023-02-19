@@ -1,6 +1,5 @@
 package com.puresoftware.bottomnavigationappbar
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -10,16 +9,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.core.view.get
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.kakao.sdk.user.UserApiClient
 import com.puresoftware.bottomnavigationappbar.CenterWeggle.CenterWeggleFragment
 import com.puresoftware.bottomnavigationappbar.Home.HomeFragment
 import com.puresoftware.bottomnavigationappbar.MyAccount.MyAccountFragment
-import com.puresoftware.bottomnavigationappbar.MyAccount.login.LoginActivity
 import com.puresoftware.bottomnavigationappbar.Weggler.WegglerFragment
 import com.puresoftware.bottomnavigationappbar.brands.BrandsFragment
 import com.puresoftware.bottomnavigationappbar.databinding.ActivityMainBinding
@@ -116,19 +112,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.frag5 -> {
-                    UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-                        if (error != null) {
-                            val intent = Intent(this, LoginActivity::class.java)
-                            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                            finish()
-                        } else if (tokenInfo != null) {
-                            Log.d("하하하1","하하하하")
-                            Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
-                            transaction?.replace(R.id.main_frame, myAccountFragment!!)?.commit()
-                            Log.i(TAG, "myAccount 선택됨")
-                        }
-                    }
-                    Log.d("하하하7","하하하하")
+                    transaction?.replace(R.id.main_frame, myAccountFragment!!)?.commit()
+                    Log.i(TAG, "myAccount 선택됨")
                     true
                 }
                 else -> {
