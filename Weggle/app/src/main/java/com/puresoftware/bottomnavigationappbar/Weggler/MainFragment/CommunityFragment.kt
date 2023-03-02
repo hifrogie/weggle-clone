@@ -1,8 +1,9 @@
-package com.puresoftware.bottomnavigationappbar.Weggler.MidFragment
+package com.puresoftware.bottomnavigationappbar.Weggler.MainFragment
 
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -10,8 +11,8 @@ import androidx.lifecycle.Observer
 import com.puresoftware.bottomnavigationappbar.MainActivity
 import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.Weggler.Adapter.ItemPopularPostingTabAdapter
-import com.puresoftware.bottomnavigationappbar.Weggler.Model.ReviewInCommunity
 import com.puresoftware.bottomnavigationappbar.Server.MasterApplication
+import com.puresoftware.bottomnavigationappbar.Weggler.Model.ReviewInCommunity
 import com.puresoftware.bottomnavigationappbar.Weggler.SideFragment.CommunityPosting.TotalFragment
 import com.puresoftware.bottomnavigationappbar.Weggler.SideFragment.CommunityFragment.ShellFragment
 import com.puresoftware.bottomnavigationappbar.Weggler.SideFragment.CommunityPosting.DetailCommunityPostingFragment
@@ -23,7 +24,6 @@ class CommunityFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var mainActivity: MainActivity
     private lateinit var wegglerApp : MasterApplication
-    private var popularAdapter: ItemPopularPostingTabAdapter?= null
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -127,17 +127,24 @@ class CommunityFragment : Fragment() {
 
     private fun initData(){
         //어댑터 생성
-        val popularData = mainActivity.communityViewModel.popularPostingLiveData.value
-        popularAdapter = if (popularData==null){ ItemPopularPostingTabAdapter(arrayListOf(),mainActivity)
-        }else{ ItemPopularPostingTabAdapter(popularData,mainActivity) }
+        val popularData = if (mainActivity.communityViewModel.popularPostingLiveData.value==null) arrayListOf()
+        else mainActivity.communityViewModel.popularPostingLiveData.value!!
+        val popularAdapter = ItemPopularPostingTabAdapter(popularData,mainActivity)
+        binding.popList.adapter = popularAdapter.apply{
+            setOnItemClickListener(object : ItemPopularPostingTabAdapter.OnItemClickListener{
+                override fun onItemClick(item: ReviewInCommunity) {
+                    mainActivity.changeFragment(DetailCommunityPostingFragment("main", item))
+                    mainActivity.setMainViewVisibility(false)
+                }
+
+            })
+        }
 
         //인기 포스팅 변화 시 갱신
         mainActivity.communityViewModel.popularPostingLiveData.observe(mainActivity, Observer {
-            if (it!=null && it.size>0 && popularAdapter!=null){
-                val data = mainActivity.communityViewModel.popularPostingLiveData.value
-                val dataList =if (data!!.size>=4)  data.subList(0,4).toList() else data.toList()
-                popularAdapter?.setData(dataList)
-            }
+            val data = mainActivity.communityViewModel.popularPostingLiveData.value
+            val dataList = if (data!!.size >= 4) data.subList(0, 4) else data
+            popularAdapter.setData(dataList)
         })
     }
 }
