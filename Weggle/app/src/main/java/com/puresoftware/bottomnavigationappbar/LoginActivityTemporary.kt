@@ -14,20 +14,21 @@ import androidx.security.crypto.MasterKey
 import com.puresoftware.bottomnavigationappbar.Server.MasterApplication
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.Token
 import com.puresoftware.bottomnavigationappbar.databinding.ActivityLoginBinding
+import com.puresoftware.bottomnavigationappbar.databinding.ActivityLoginTeomporaryBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivityTemporary : AppCompatActivity() {
     private var backPressTime:Long = 0
     private lateinit var callback:OnBackPressedCallback
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor:Editor
 
-    private lateinit var binding:ActivityLoginBinding
+    private lateinit var binding:ActivityLoginTeomporaryBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityLoginTeomporaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 자동 로그인 구현 (암호화)
@@ -86,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
     // user login
     private fun login(){
         val masterApp = (application as MasterApplication)
-        masterApp.createRetrofit(this@LoginActivity)
+        masterApp.createRetrofit(this@LoginActivityTemporary)
         masterApp.service.loginUser(
             getUserName(),getUserPass()
         ).enqueue(object : Callback<Token> {
@@ -107,13 +108,13 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
 
                 }else{
-                    Toast.makeText(this@LoginActivity,"계정 오류",Toast.LENGTH_SHORT)
+                    Toast.makeText(this@LoginActivityTemporary,"계정 오류",Toast.LENGTH_SHORT)
                         .show()
                 }
             }
 
             override fun onFailure(call: Call<Token>, t: Throwable) {
-                Toast.makeText(this@LoginActivity,"로그인 실패", Toast.LENGTH_SHORT)
+                Toast.makeText(this@LoginActivityTemporary,"로그인 실패", Toast.LENGTH_SHORT)
                     .show()
             }
 
