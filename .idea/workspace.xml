@@ -5,22 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8741948e-b8e1-4a15-96b5-47db3e32afd9" name="Changes" comment="">
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+=======
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BottomNavigationAppbar/app/src/main/java/com/puresoftware/bottomnavigationappbar/Home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/BottomNavigationAppbar/app/src/main/java/com/puresoftware/bottomnavigationappbar/Home/HomeFragment.kt" afterDir="false" />
+>>>>>>> develop
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+<<<<<<< HEAD
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[127.0.0.1:62001]" />
+=======
   <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/brandon/.android/avd/Pixel_3a_API_29.avd]" />
+>>>>>>> develop
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
   </component>
   <component name="Git.Settings">
+<<<<<<< HEAD
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/Weggle-Weggler/Weggle-Weggler" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+=======
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+>>>>>>> develop
   </component>
   <component name="ProjectId" id="2JlIYiQ9k8ca6R8WzFgTHL8Yves" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -34,6 +47,8 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="cidr.known.project.marker" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Weggle-Weggler" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
@@ -115,5 +130,9 @@
         </entry>
       </map>
     </option>
+<<<<<<< HEAD
+    <option name="oldMeFiltersMigrated" value="true" />
+=======
+>>>>>>> develop
   </component>
 </project>
