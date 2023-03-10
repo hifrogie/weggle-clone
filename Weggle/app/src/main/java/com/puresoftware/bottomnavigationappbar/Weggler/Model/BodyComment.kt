@@ -4,6 +4,6 @@ import java.io.Serializable
 
 //post comment body
 
-class BodyCommentForPOST(
+class BodyComment(
     val body : String,
 ) : Serializable
