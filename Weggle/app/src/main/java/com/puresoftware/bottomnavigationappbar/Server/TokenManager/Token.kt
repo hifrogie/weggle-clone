@@ -1,4 +1,4 @@
-package com.puresoftware.bottomnavigationappbar.Weggler.Model
+package com.puresoftware.bottomnavigationappbar.Server.TokenManager
 
 
 // 토큰 반환 모델

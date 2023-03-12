@@ -1,5 +1,6 @@
 package com.puresoftware.bottomnavigationappbar.Server
 
+import com.puresoftware.bottomnavigationappbar.Server.TokenManager.Token
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.*
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -18,6 +19,12 @@ interface RetrofitService {
         @Field("name") name :String,
         @Field("password") password : String,
     ) : Call<Token>
+
+//    //token reset
+//    @PATCH("token")
+//    fun patchToken(
+//        @Query("refreshToken") refreshToken:String
+//    ) : Call<Token>
 
     //2개의 데이터 (공구해요 , 프리토크)
     @GET("categories/{category}/products")
