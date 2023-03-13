@@ -1,5 +1,6 @@
 package com.puresoftware.bottomnavigationappbar.Server
 
+import com.puresoftware.bottomnavigationappbar.Server.TokenManager.Token
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.*
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -19,6 +20,12 @@ interface RetrofitService {
         @Field("password") password : String,
     ) : Call<Token>
 
+//    //token reset
+//    @PATCH("token")
+//    fun patchToken(
+//        @Query("refreshToken") refreshToken:String
+//    ) : Call<Token>
+
     //2개의 데이터 (공구해요 , 프리토크)
     @GET("categories/{category}/products")
     fun  getCommunityProduct(
@@ -34,7 +41,7 @@ interface RetrofitService {
     fun addCommunityProduct(
         @Path("category") category : String,
         @Path("name") name : String,
-        @Body body : BodyProductForPOST,
+        @Body body : BodyProduct,
     ): Call<Product>
 
     //리뷰 얻기
@@ -48,7 +55,7 @@ interface RetrofitService {
     @POST("products/{productId}/reviews")
     fun addReView(
         @Path("productId") productId: Int,
-        @Part("param") param : BodyReviewForPOST, //body
+        @Part("param") param : BodyReview, //body
         @Part multipartFile : MultipartBody.Part? //image
     ): Call<ReviewInCommunity>
 
@@ -84,8 +91,19 @@ interface RetrofitService {
     @POST("reviews/{reviewId}/comments")
     fun addReviewComment(
         @Path("reviewId")reviewId: Int,
-        @Body body : BodyCommentForPOST,
+        @Body body : BodyComment,
     ) : Call<Comment>
 
+    @GET("reviews/{reviewId}")
+    fun getCommunityReviewFromId(
+        @Path("reviewId")reviewId: Int,
+    ):Call<ReviewInCommunity>
+
+    // like or unlike
+    @PUT("reviews/{reviewId}")
+    fun putLike(
+        @Path("reviewId")reviewId: Int,
+        @Query(value = "like") like : Boolean,
+    ):Call<String>
 
 }

@@ -2,6 +2,7 @@ package com.puresoftware.bottomnavigationappbar.Weggler.SideFragment.CommunityPo
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +15,8 @@ import com.puresoftware.bottomnavigationappbar.Weggler.Model.ReviewInCommunity
 import com.puresoftware.bottomnavigationappbar.databinding.FragmentTotalBinding
 
 
-class TotalFragment(
-    private val selectPosition: String,
-) : Fragment() {
+class TotalFragment() : Fragment() {
+    private var selectPosition: String?=null
     private var _binding: FragmentTotalBinding? = null
     private val binding get() = _binding!!
     private lateinit var mainActivity: MainActivity
@@ -30,10 +30,16 @@ class TotalFragment(
         fm = mainActivity.supportFragmentManager
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            selectPosition = it.getString("selectPosition",null)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentTotalBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -53,16 +59,16 @@ class TotalFragment(
                 override fun onItemClick(item: ReviewInCommunity) {
                     mainActivity.setMainViewVisibility(false)
                     if (selectPosition =="Main Posting"){
-                        mainActivity.changeFragment(DetailCommunityPostingFragment("main",item))
+                        mainActivity.changeFragment(DetailCommunityPostingFragment.newInstance(item.reviewId,"main"))
                     }else {
-                        mainActivity.changeFragment(DetailCommunityPostingFragment("sub",item))
+                        mainActivity.changeFragment(DetailCommunityPostingFragment.newInstance(item.reviewId,"sub"))
                     }
                 }
 
             })
         }
 
-        // 게시물 데이터 설정
+        // 게시물 데이터 설정 (옵저버로 관찰)
         mainActivity.communityViewModel.apply {
             // 메인 포스팅
             if (selectPosition == "Main Posting") {
@@ -84,9 +90,22 @@ class TotalFragment(
                 communityLiveData.observe(mainActivity, Observer {
                     adapter.setData(it)
                 })
+
+            //내 댓글
+            } else if (selectPosition== "My Comment"){
+                Log.d("dljsdlfj sdflsjdfos","내 댓글 리스트 입니다 .~~~")
             }
         }
 
+    }
+
+    companion object{
+        fun newInstance(selectPosition:String) =
+            TotalFragment().apply {
+                arguments= Bundle().apply {
+                    putString("selectPosition",selectPosition)
+                }
+            }
     }
 
 }

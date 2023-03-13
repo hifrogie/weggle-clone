@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.tabs.TabLayout
@@ -15,16 +16,12 @@ import com.puresoftware.bottomnavigationappbar.MainActivity
 import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.Weggler.Manager.CommunityCommentManager
 import com.puresoftware.bottomnavigationappbar.Weggler.Manager.CommunityManagerWithReview
-import com.puresoftware.bottomnavigationappbar.Weggler.MidFragment.ChallengeFragment
-import com.puresoftware.bottomnavigationappbar.Weggler.MidFragment.CommunityFragment
-import com.puresoftware.bottomnavigationappbar.Weggler.MidFragment.FeedFragment
-import com.puresoftware.bottomnavigationappbar.Weggler.MidFragment.RankingFragment
-import com.puresoftware.bottomnavigationappbar.Weggler.Model.Token
+import com.puresoftware.bottomnavigationappbar.Weggler.MainFragment.ChallengeFragment
+import com.puresoftware.bottomnavigationappbar.Weggler.MainFragment.CommunityFragment
+import com.puresoftware.bottomnavigationappbar.Weggler.MainFragment.FeedFragment
+import com.puresoftware.bottomnavigationappbar.Weggler.MainFragment.RankingFragment
 import com.puresoftware.bottomnavigationappbar.Weggler.Manager.ProductManager
 import com.puresoftware.bottomnavigationappbar.databinding.WegglerFragmentBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class WegglerFragment : Fragment() {
@@ -41,7 +38,6 @@ class WegglerFragment : Fragment() {
     private var challengeFragment: ChallengeFragment? = null
     private var communityFragment: CommunityFragment? = null
     private var rankingFragment: RankingFragment? = null
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity  = context as MainActivity

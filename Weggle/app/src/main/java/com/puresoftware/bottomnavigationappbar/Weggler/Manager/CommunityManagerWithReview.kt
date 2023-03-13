@@ -2,9 +2,8 @@ package com.puresoftware.bottomnavigationappbar.Weggler.Manager
 
 import android.app.Activity
 import android.net.Uri
-import com.puresoftware.bottomnavigationappbar.Weggler.Model.MultiCommunityData
+import com.puresoftware.bottomnavigationappbar.Weggler.Model.MultiCommunityDataBody
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.ReviewInCommunity
-import com.puresoftware.bottomnavigationappbar.Weggler.Model.ReviewListInCommunity
 import com.puresoftware.bottomnavigationappbar.Server.MasterApplication
 import com.puresoftware.bottomnavigationappbar.Weggler.ViewModel.MultiPartViewModel
 import retrofit2.Call
@@ -38,8 +37,8 @@ class CommunityManagerWithReview(
     }
 
     //MultiPart로 데이터 추가
-    fun addCommunityReview(productId: Int, multiCommunityData: MultiCommunityData, file: Uri?,
-    activity: Activity, paramFunc: (ReviewInCommunity?,String?) -> Unit){
+    fun addCommunityReview(productId: Int, multiCommunityData: MultiCommunityDataBody, file: Uri?,
+                           activity: Activity, paramFunc: (ReviewInCommunity?,String?) -> Unit){
         MultiPartViewModel().uploadCommunityPoster(productId,multiCommunityData,
             file, activity, paramFunc = {  data,message->
                 paramFunc(data,message)
@@ -75,7 +74,11 @@ class CommunityManagerWithReview(
                     response: Response<ArrayList<ReviewInCommunity>>
                 ) {
                     if(response.isSuccessful){
-                        paramFunc(response.body(),null)
+                        if (response.body()?.size==0){
+                            paramFunc(null,"No Posting")
+                        }else {
+                            paramFunc(response.body(), null)
+                        }
                     }else{
                         paramFunc(null, response.errorBody()!!.string())
                     }
@@ -83,6 +86,27 @@ class CommunityManagerWithReview(
 
                 override fun onFailure(call: Call<ArrayList<ReviewInCommunity>>, t: Throwable) {
                     paramFunc(null,"error")
+                }
+
+            })
+    }
+
+    fun getReviewFromId(reviewId : Int, paramFunc: (ReviewInCommunity?, String?) -> Unit){
+        wApp.service.getCommunityReviewFromId(reviewId)
+            .enqueue(object : Callback<ReviewInCommunity>{
+                override fun onResponse(
+                    call: Call<ReviewInCommunity>,
+                    response: Response<ReviewInCommunity>
+                ) {
+                    if (response.isSuccessful){
+                        paramFunc(response.body(),null)
+                    }else{
+                        paramFunc(null,response.errorBody()!!.string())
+                    }
+                }
+
+                override fun onFailure(call: Call<ReviewInCommunity>, t: Throwable) {
+                    paramFunc(null, "error")
                 }
 
             })

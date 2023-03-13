@@ -6,16 +6,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:padding="@dimen/margin_10"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_len_50">
         <ImageView
+            android:id="@+id/nav_close"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="@dimen/item_size_25"
-            android:layout_height="@dimen/item_size_25"
+            android:layout_width="@dimen/item_size_30"
+            android:layout_height="@dimen/item_size_30"
             android:src="@drawable/ic_baseline_close_24"/>
         <ImageView
             android:id="@+id/nav_setting"

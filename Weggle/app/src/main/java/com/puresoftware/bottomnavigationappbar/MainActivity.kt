@@ -2,13 +2,16 @@ package com.puresoftware.bottomnavigationappbar
 
 
 import android.content.Intent
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -25,9 +28,13 @@ import com.puresoftware.bottomnavigationappbar.MyAccount.login.LoginActivity
 import com.puresoftware.bottomnavigationappbar.Weggler.WegglerFragment
 import com.puresoftware.bottomnavigationappbar.brands.BrandsFragment
 import com.puresoftware.bottomnavigationappbar.databinding.ActivityMainBinding
+import com.puresoftware.bottomnavigationappbar.databinding.NavigationInnerBinding
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var  binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+    private var backPressTime:Long = 0
+    private lateinit var callback :OnBackPressedCallback
     // fragment
     // https://aries574.tistory.com/382
     var homeFragment: HomeFragment? = null // 홈
@@ -35,8 +42,8 @@ class MainActivity : AppCompatActivity() {
     var centerWeggleFragment: CenterWeggleFragment? = null // 메인
     var wegglerFragment: WegglerFragment? = null // 위글러
     var myAccountFragment: MyAccountFragment? = null // 내 정보
-    var fragmentManager: FragmentManager? = null // Fragment
-    var transaction: FragmentTransaction? = null // Fragment
+    var fragmentManager: FragmentManager? = null // Fragment manager
+    var transaction: FragmentTransaction? = null // Fragment transaction
 
 
     //MaterApplication : 로그인 + API 연동////
@@ -44,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     ///////////////////////////////////////
 
     //weggler////////////////////
-    val communityViewModel:CommunityViewModel by viewModels()
+    val communityViewModel: CommunityViewModel by viewModels()
     /////////////////////////////
 
     val TAG: String = MainActivity::class.java.simpleName // 태그
@@ -59,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         //////////////////////
 
 
-        // toolbar control
+        // toolbar control ///////////////
         var toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setTitle("")
@@ -141,39 +148,52 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // ImageView의 Weggle Button을 누르면 발생.
+        //뒤로가기 버튼 조작 (2초 이내 연속 클릭 시 앱 종료 )
+        callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if(System.currentTimeMillis()>backPressTime+2000){
+                    backPressTime = System.currentTimeMillis()
+                    Toast.makeText(applicationContext,"'뒤로' 버틀을 한번 더 누르시면 앱이 종료됩니다."
+                        ,Toast.LENGTH_SHORT).show()
+                }else{
+                    finishAffinity()
+                }
+            }
+        }
+        this.onBackPressedDispatcher.addCallback(this,callback)
+
+        // ImageView의 Weggle Button 동작
         binding.btnCenterWeggle.setOnClickListener {
-
-            transaction =
-                fragmentManager!!.beginTransaction() // 화면 전환 호출(이곳에서 새로 호출을 해준다는 개념으로 추가함)
+            transaction = fragmentManager!!.beginTransaction()
             transaction?.replace(R.id.main_frame, centerWeggleFragment!!)?.commit()
-            binding.bottomNavi.menu.getItem(2).setChecked(true) // Item이 선택되어지는 상태
-
+            binding.bottomNavi.menu.getItem(2).isChecked = true
             supportActionBar!!.hide()
             Log.i(TAG, "weggler btn 선택됨")
         }
 
-        // 내비 뷰 클릭 이벤트 (좌측)
-        binding.mainNavi.setNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_setting -> {
-                    changeFragment(SettingFragment())
-                }
-            }
 
-            false
+        //좌측 햄버거 뷰 동작
+        binding.mainNavi.inflateHeaderView(R.layout.navigation_inner).apply {
+            //go setting
+            this.findViewById<ImageView>(R.id.nav_setting).setOnClickListener {
+                setSubFragmentView(SettingFragment())
+            }
+            //go close
+            this.findViewById<ImageView>(R.id.nav_close).setOnClickListener {
+                binding.drawLayout.close()
+            }
         }
+
+
     }
 
-    // 기능별 options
-    // https://velog.io/@sinbee0402/AndroidKotlin-Toolbar-Custom
-    // ActionBar의 Item을 누르면 되는거
+    // 메뉴 선택 옵션 (상단)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 Log.d(TAG, "드로블메뉴")
                 //드로어블 사이드
-                binding.drawLayout.openDrawer(GravityCompat.START) //left
+                binding.drawLayout.openDrawer(GravityCompat.START)
                 return true
             }
             R.id.search -> {
@@ -184,6 +204,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "바스켓")
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -196,28 +217,40 @@ class MainActivity : AppCompatActivity() {
     }
 
     //weggler////////////////////
-    fun changeFragment(goFragment:Fragment){
-        if (fragmentManager!=null) {
-            fragmentManager!!.beginTransaction().add(R.id.main_frame, goFragment)
-                .addToBackStack(null)
-                .commit()
-        }
+    fun changeFragment(goFragment: Fragment) {
+        fragmentManager!!.beginTransaction().add(R.id.main_frame, goFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
-    fun goBackFragment(fragment: Fragment){
-        if (fragmentManager!=null) {
+    private fun setSubFragmentView(goFragment: Fragment){
+        fragmentManager!!.beginTransaction().replace(R.id.slide_layout, goFragment)
+            .addToBackStack(null)
+            .commit()
+        setSubFragment()
+    }
+    fun setSubFragment(){
+        val state = binding.frameLayout.panelState
+        // 닫힌 상태일 경우 열기
+        if (state == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            binding.frameLayout.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
+        }
+        // 열린 상태일 경우 닫기
+        else if (state == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            binding.frameLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        }
+    }
+    fun goBackFragment(fragment: Fragment) {
             fragmentManager!!.beginTransaction().remove(fragment).commit()
             fragmentManager!!.popBackStack()
-
-        }
     }
 
-    fun setMainViewVisibility(isSet:Boolean){
-        if (isSet){
+    fun setMainViewVisibility(isSet: Boolean) {
+        if (isSet) {
             binding.bottomNavi.visibility = View.VISIBLE
             binding.toolbar.visibility = View.VISIBLE
             binding.btnCenterWeggle.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.bottomNavi.visibility = View.GONE
             binding.toolbar.visibility = View.GONE
             binding.btnCenterWeggle.visibility = View.GONE

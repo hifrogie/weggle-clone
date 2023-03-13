@@ -1,7 +1,6 @@
 package com.puresoftware.bottomnavigationappbar.Weggler.Manager
 
-import android.util.Log
-import com.puresoftware.bottomnavigationappbar.Weggler.Model.BodyProductForPOST
+import com.puresoftware.bottomnavigationappbar.Weggler.Model.BodyProduct
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.Product
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.ProductList
 import com.puresoftware.bottomnavigationappbar.Server.MasterApplication
@@ -47,22 +46,4 @@ class ProductManager(
             })
     }
 
-    //새로 프로덕트 추가
-    private fun addProduct(productName : String, paramFunc : (Product?, message:String?)->Unit){
-        wApp.service.addCommunityProduct("community",productName, BodyProductForPOST(productName))
-            .enqueue(object : Callback<Product>{
-                override fun onResponse(call: Call<Product>, response: Response<Product>) {
-                    if (response.isSuccessful){
-                        paramFunc(response.body(),null)
-                    }else{
-                        paramFunc(null,response.errorBody()!!.string())
-                    }
-                }
-
-                override fun onFailure(call: Call<Product>, t: Throwable) {
-                    paramFunc(null,"errr")
-                }
-
-            })
-    }
 }

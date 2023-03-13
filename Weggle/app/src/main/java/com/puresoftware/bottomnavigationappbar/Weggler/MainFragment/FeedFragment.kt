@@ -1,4 +1,4 @@
-package com.puresoftware.bottomnavigationappbar.Weggler.MidFragment
+package com.puresoftware.bottomnavigationappbar.Weggler.MainFragment
 
 import android.content.Context
 import android.os.Bundle
@@ -42,7 +42,7 @@ class FeedFragment : Fragment() {
     private fun setUpListener(){
         binding.feedGoRcwButton.setOnClickListener {
             mainActivity.setMainViewVisibility(false)
-            mainActivity.changeFragment(ShellFragment("추천 위글러"))
+            mainActivity.changeFragment(ShellFragment.newInstance("추천 위글러"))
         }
     }
 

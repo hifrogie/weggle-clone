@@ -1,4 +1,4 @@
-package com.puresoftware.bottomnavigationappbar.Weggler.MidFragment
+package com.puresoftware.bottomnavigationappbar.Weggler.MainFragment
 
 import android.content.Context
 import android.os.Bundle
@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.databinding.FragmentRankingBinding
 
 //랭킹 사용자 리스트 보기
