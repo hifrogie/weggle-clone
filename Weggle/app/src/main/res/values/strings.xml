@@ -14,7 +14,7 @@
     <string name="price">21,000원</string>
     <string name="video_nickname_category">식품</string>
     <string name="month">1개월 전</string>
-
+    <string name="weggle">위글</string>
     <!-- brands의 MainViewPager 아래에 있는 숫자 -->
     <string name="viewpager2_banner">%1$d/%2$d</string>
 
@@ -58,4 +58,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cancel">취소</string>
     <string name="group_buy">공동구매</string>
+    <string name="quot_quot">입력창에 \"회원탈퇴\"를 입력해주세요</string>
+    <string name="select_keyword_ment">나를 소개하는 키워드를 선택해보세요!</string>
+    <string name="add_review_product">추가 리뷰 상품</string>
+
+
 </resources>
