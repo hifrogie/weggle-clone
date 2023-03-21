@@ -1,16 +1,15 @@
 package com.puresoftware.bottomnavigationappbar.Weggler.ViewModel
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.net.Uri
-import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.puresoftware.bottomnavigationappbar.MainActivity
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.ReviewInCommunity
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.MultiCommunityDataBody
-import com.puresoftware.bottomnavigationappbar.Weggler.Model.BodyReview
+import com.puresoftware.bottomnavigationappbar.Weggler.Model.BodyReviewForCommunityPOST
+import com.puresoftware.bottomnavigationappbar.Weggler.Unit.getImageFilePath
 import kotlinx.coroutines.launch
 
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -31,7 +30,7 @@ class MultiPartViewModel: ViewModel(){
         viewModelScope.launch {
             try {
 
-                val body = BodyReview(multiCommunityData)
+                val body = BodyReviewForCommunityPOST(multiCommunityData)
 
                 //이미지 처리
                 val multipartFile : MultipartBody.Part? = if (filePath!=null) {
@@ -49,7 +48,7 @@ class MultiPartViewModel: ViewModel(){
 
                 //retrofit 연결
                 ((activity as MainActivity).masterApp).service
-                    .addReView(productId,body,multipartFile)
+                    .addReViewForCommunity(productId,body,multipartFile)
                     .enqueue(object : Callback<ReviewInCommunity> {
                         override fun onResponse(
                             call: Call<ReviewInCommunity>, response: Response<ReviewInCommunity>) {
@@ -62,13 +61,12 @@ class MultiPartViewModel: ViewModel(){
                         }
                         override fun onFailure(call: Call<ReviewInCommunity>, t: Throwable) {
                             paramFunc(null,"error")
-
-                            Log.d("qazzxjssjsisskdkd",t.toString())
+                            Log.d("error post",t.toString())
                         }
                     })
             }catch (e:Exception){
                 paramFunc(null,"error")
-                Log.d("qazzxjssjsisskdkd",e.toString())
+                Log.d("error post ",e.toString())
             }
         }
 
@@ -78,16 +76,4 @@ class MultiPartViewModel: ViewModel(){
     private fun String?.toPlainRequestBody() =
         requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
 
-    //Uri를 String으로 전환
-    @SuppressLint("Recycle")
-    private fun getImageFilePath(activity:Activity, contentUri:Uri):String{
-        var columnIndex = 0
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = activity.contentResolver.query(contentUri,projection,
-        null,null,null)
-        if (cursor!!.moveToFirst()){
-            columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        }
-        return cursor.getString(columnIndex)
-    }
 }
