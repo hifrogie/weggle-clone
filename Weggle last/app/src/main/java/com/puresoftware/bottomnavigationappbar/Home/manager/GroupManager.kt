@@ -4,31 +4,33 @@ import android.util.Log
 import com.puresoftware.bottomnavigationappbar.Home.GroupList
 import com.puresoftware.bottomnavigationappbar.Home.data.GroupBuyData
 import com.puresoftware.bottomnavigationappbar.Home.data.PagenationList
+import com.puresoftware.bottomnavigationappbar.Home.data.VideoData
 import com.puresoftware.bottomnavigationappbar.Server.MasterApplication
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.Product
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.ProductList
+import com.puresoftware.bottomnavigationappbar.brands.data.MetaData
+import com.puresoftware.bottomnavigationappbar.brands.data.MetaInsideData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class GroupManager(private val wApp: MasterApplication) {
 
-    fun getGroup(name:String, paramFunc: (ArrayList<GroupBuyData>) -> Unit){
+    fun getGroup(name:String, paramFunc: (VideoData) -> Unit){
         wApp.service.addGroupProduct(name)
-            .enqueue(object : Callback<GroupList> {
-                override fun onResponse(call: Call<GroupList>, response: Response<GroupList>) {
+            .enqueue(object : Callback<VideoData> {
+                override fun onResponse(call: Call<VideoData>, response: Response<VideoData>) {
                     if (response.isSuccessful) {
 //                            var arrayProduct = ArrayList<String>()
 //                            arrayProduct.add(response.body()!!.productList[].subjectFiles.first())
-                        paramFunc(response.body()!!.productList)
-                        Log.d("히히히히", response.errorBody().toString())
+                        paramFunc(response.body()!!)
+                        Log.d("온레스폰스", response.errorBody().toString())
                     } else {
 //                        Toast.makeText(this,"광고를 가져오는데 실패하였습니다.",Toast.LENGTH_LONG).show()
-                        Log.d("하하하ㅏㅎ", "하하하하")
-                        Log.d("하하하하", response.errorBody().toString())
+                        Log.d("레스폰스 엘스", response.errorBody().toString())
                     }
                 }
-                override fun onFailure(call: Call<GroupList>, t: Throwable) {
+                override fun onFailure(call: Call<VideoData>, t: Throwable) {
                     Log.d("온페일", "하하하하")
                 }
 
@@ -48,6 +50,24 @@ class GroupManager(private val wApp: MasterApplication) {
                 }
 
                 override fun onFailure(call: Call<PagenationList>, t: Throwable) {
+                    Log.d("실패",t.toString())
+                }
+
+            })
+    }
+    fun getMetaData(key:String,paramFunc: (String) -> Unit){
+        wApp.service.getMeta(key)
+            .enqueue(object : Callback<MetaData>{
+                override fun onResponse(call: Call<MetaData>, response: Response<MetaData>) {
+                    if (response.isSuccessful){
+                        if(response.body() != null) {
+                           paramFunc(response.body()!!.body.name)
+                        }
+                    }else{
+                        Log.d("에러",response.errorBody()!!.string())
+                    }
+                }
+                override fun onFailure(call: Call<MetaData>, t: Throwable) {
                     Log.d("실패",t.toString())
                 }
 
