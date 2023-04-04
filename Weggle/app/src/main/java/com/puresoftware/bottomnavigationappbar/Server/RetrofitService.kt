@@ -1,8 +1,6 @@
 package com.puresoftware.bottomnavigationappbar.Server
 
-import com.puresoftware.bottomnavigationappbar.MyAccount.Model.BodyReviewForPOST
-import com.puresoftware.bottomnavigationappbar.MyAccount.Model.ReviewData
-import com.puresoftware.bottomnavigationappbar.MyAccount.Model.User
+import com.puresoftware.bottomnavigationappbar.MyAccount.Model.*
 import com.puresoftware.bottomnavigationappbar.Server.TokenManager.Token
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.*
 import okhttp3.MultipartBody
@@ -38,14 +36,22 @@ interface RetrofitService {
     ):Call<User>
 
     //유저 수정
-    @Multipart
     @PATCH("users")
     fun updateUser(
-        @Part email : String,
-        @Part password: String?,
-        @Part newPassword : String?,
-        @PartMap body: HashMap<String, RequestBody>?
-    )
+        @Body requestBody: UserPatch
+//        @Body email : String?,
+//        @Body password: String?,
+//        @Body newPassword : String?,
+//        @Body body : UserBody?,
+    ):Call<User>
+
+    //유저 이미지 수정
+    @Multipart
+    @PATCH("userProfile")
+    fun updateUserImage(
+        @Part profile : MultipartBody.Part?,
+        @Part background : MultipartBody.Part?
+    ):Call<User>
     ///////////////////////////////////////////
 
     // 프로덱트 관련 /////////////////////////////
@@ -84,7 +90,7 @@ interface RetrofitService {
 
     //리뷰 얻기
     @GET("products/{productId}/reviewsByCreateTime")
-    fun getReViews(
+    fun getCommunityReViews(
         @Path("productId") productId : Int,
     ): Call<ArrayList<ReviewInCommunity>>
 
@@ -114,9 +120,10 @@ interface RetrofitService {
 
     //내 리뷰 조회
     @GET("reviewsByUser")
-    fun getMyReviewList() : Call<ArrayList<ReviewInCommunity>>
+    fun getMyReviewList() : Call<ArrayList<ReviewData>>
 
-
+    @GET("products/5/reviewsByUser")
+    fun getMyCommunityReviewList() : Call<ArrayList<ReviewInCommunity>>
 
     //내 댓글 조회
     @GET("commentByUser")
@@ -142,10 +149,17 @@ interface RetrofitService {
         @Body body : BodyComment,
     ) : Call<Comment>
 
+    // 리뷰 아이디로 커뮤니티 리뷰 얻기
     @GET("reviews/{reviewId}")
     fun getCommunityReviewFromId(
         @Path("reviewId")reviewId: Int,
     ):Call<ReviewInCommunity>
+
+    // 리뷰 아이디로 어카운트 리뷰 얻기
+    @GET("reviews/{reviewId}")
+    fun getAccountReviewFromId(
+        @Path("reviewId")reviewId : Int,
+    ): Call<ReviewData>
 
     // like or unlike
     @PUT("reviews/{reviewId}")

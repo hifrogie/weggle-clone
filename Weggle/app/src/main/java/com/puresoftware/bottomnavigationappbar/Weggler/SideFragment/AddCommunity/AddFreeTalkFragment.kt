@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -23,7 +25,6 @@ import com.puresoftware.bottomnavigationappbar.Weggler.Manager.CommunityManagerW
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.MultiCommunityDataBody
 import com.puresoftware.bottomnavigationappbar.Weggler.SideFragment.CommunityFragment.ShellFragment
 import com.puresoftware.bottomnavigationappbar.databinding.FragmentAddFreeTalkBinding
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
 
 
 class AddFreeTalkFragment : Fragment() {
@@ -56,6 +57,7 @@ class AddFreeTalkFragment : Fragment() {
         _binding = null
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("InflateParams", "ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -139,6 +141,7 @@ class AddFreeTalkFragment : Fragment() {
             }
         })
     }
+    @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("ResourceType")
     private fun setUpListener(){
         binding.delSubject.setOnClickListener {
@@ -163,16 +166,16 @@ class AddFreeTalkFragment : Fragment() {
                         type, subject, text, linkUrl, -1
                     )
                     CommunityManagerWithReview(mainActivity.masterApp)
-                        .addCommunityReview(
+                        .addCommunityReviewTypeFree(
                             mainActivity.communityViewModel.communityProduct!!.productId,multiCommunityData, filePath,
                             mainActivity, paramFunc = { data , message ->
-                                if (message != null) {
+                                if (data == null) {
                                     Toast.makeText(mainActivity, message, Toast.LENGTH_SHORT)
                                         .show()
-                                    Log.d("message",message)
+                                    Log.d("message",message!!)
                                 } else {
-                                    //view model에 데이터 추가
-                                    mainActivity.communityViewModel.addCommunityData(data!!)
+                                    //view model에 데이터 추가 후 메인으로 이동
+                                    mainActivity.communityViewModel.addCommunityData(data)
                                     mainActivity.communityViewModel.addMyPostingData(data)
                                     mainActivity.communityViewModel.addPopularPostingData(data)
                                     mainActivity.goBackFragment(this@AddFreeTalkFragment)
