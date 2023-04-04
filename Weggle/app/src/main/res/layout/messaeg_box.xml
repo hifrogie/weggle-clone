@@ -21,15 +21,16 @@
             android:layout_height="@dimen/text_size_25" />
         <TextView
             android:gravity="center"
-            android:textSize="@dimen/text_size_20"
+            android:textSize="@dimen/text_size_15"
             tools:text="message box text "
             android:id="@+id/text"
             android:layout_marginTop="@dimen/item_size_50"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:lines="3"
-            android:layout_width="@dimen/top_len_100"
+            app:layout_constraintBottom_toTopOf="@id/commit_button"
+            android:maxLines="3"
+            android:layout_width="@dimen/top_len_140"
             android:layout_height="wrap_content"/>
 
         <Button
