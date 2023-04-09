@@ -51,7 +51,7 @@ class PetFragment : Fragment() {
         groupManager.getCategoryProduct("pet"){
             val categoryList = ArrayList<BodyList>()
             for(i in 0 until it.size) {
-                categoryList.add(BodyList(it[i].subjectFiles.first(),
+                categoryList.add(BodyList(it[i].subjectFiles,
                     it[i].name,
                     it[i].body.company,
                     it[i].body.charge,
@@ -59,7 +59,8 @@ class PetFragment : Fragment() {
                     it[i].body.original,
                     it[i].body.price,
                     it[i].body.duration,
-                    it[i].body.benefit))
+                    it[i].body.benefit,
+                    it[i].contentFiles))
             }
             binding.petRecycler.adapter = context?.let {
                 SoonGroupbuyAdapter(categoryList, it)

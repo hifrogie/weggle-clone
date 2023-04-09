@@ -49,6 +49,7 @@ class CategoryAdapter(val categoryList:ArrayList<CategoryData>, val context: Con
                 .addToBackStack(null)
                 .commit()
 
+            context.setMainViewVisibility(false)
         }
     }
 

@@ -12,6 +12,7 @@ class CategoryMainActivity : AppCompatActivity() {
     private lateinit var binding:ActivityCategoryMainBinding
     private val tabList = listOf("전체","식품","반려동물")
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCategoryMainBinding.inflate(layoutInflater)

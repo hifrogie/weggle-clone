@@ -48,7 +48,7 @@ class FashionFragment : Fragment() {
         groupManager.getCategoryProduct("fashion"){
             val foodList = ArrayList<BodyList>()
             for(i in 0 until it.size) {
-                foodList.add(BodyList(it[i].subjectFiles.first(),
+                foodList.add(BodyList(it[i].subjectFiles,
                     it[i].name,
                     it[i].body.company,
                     it[i].body.charge,
@@ -56,7 +56,8 @@ class FashionFragment : Fragment() {
                     it[i].body.original,
                     it[i].body.price,
                     it[i].body.duration,
-                    it[i].body.benefit))
+                    it[i].body.benefit,
+                    it[i].contentFiles))
             }
             binding.fashionRecycler.adapter = context?.let {
                 SoonGroupbuyAdapter(foodList, it)
