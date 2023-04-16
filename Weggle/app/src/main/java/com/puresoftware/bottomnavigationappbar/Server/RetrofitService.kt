@@ -4,7 +4,6 @@ import com.puresoftware.bottomnavigationappbar.MyAccount.Model.*
 import com.puresoftware.bottomnavigationappbar.Server.TokenManager.Token
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.*
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -146,7 +145,7 @@ interface RetrofitService {
     @POST("reviews/{reviewId}/comments")
     fun addReviewComment(
         @Path("reviewId")reviewId: Int,
-        @Body body : BodyComment,
+        @Body body : CommentPost,
     ) : Call<Comment>
 
     // 리뷰 아이디로 커뮤니티 리뷰 얻기
@@ -161,12 +160,18 @@ interface RetrofitService {
         @Path("reviewId")reviewId : Int,
     ): Call<ReviewData>
 
-    // like or unlike
+    // review like or unlike
     @PUT("reviews/{reviewId}")
-    fun putLike(
+    fun putReviewLike(
         @Path("reviewId")reviewId: Int,
         @Query(value = "like") like : Boolean,
     ):Call<String>
 
+    // comment like or unlike
+    @PUT("comments/{commentId}")
+    fun putCommentLike(
+        @Path("commentId")commentId: Int,
+        @Query(value = "like") like : Boolean,
+    ):Call<String>
     /////////////////////////////////////////////
 }

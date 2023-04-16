@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import com.puresoftware.bottomnavigationappbar.MainActivity
+import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.Weggler.Adapter.ItemCommunitySmallAdapterFree
 import com.puresoftware.bottomnavigationappbar.Weggler.Adapter.ItemCommunitySmallAdapterTotal
 import com.puresoftware.bottomnavigationappbar.Weggler.Adapter.ItemMyCommentAdapter
@@ -18,13 +19,13 @@ import com.puresoftware.bottomnavigationappbar.databinding.FragmentTotalBinding
 
 
 class TotalFragment() : Fragment() {
-    private var selectPosition: String?=null
+    private var selectPosition: String? = null
     private var _binding: FragmentTotalBinding? = null
     private val binding get() = _binding!!
     private lateinit var mainActivity: MainActivity
     private lateinit var fm: FragmentManager
-    private lateinit var postingAdapter : ItemCommunitySmallAdapterTotal
-    private lateinit var commentAdapter : ItemMyCommentAdapter
+    private lateinit var postingAdapter: ItemCommunitySmallAdapterTotal
+    private lateinit var commentAdapter: ItemMyCommentAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -32,12 +33,17 @@ class TotalFragment() : Fragment() {
         fm = mainActivity.supportFragmentManager
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            selectPosition = it.getString("selectPosition",null)
+            selectPosition = it.getString("selectPosition", null)
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,10 +59,8 @@ class TotalFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        postingAdapter  =ItemCommunitySmallAdapterTotal(mainActivity, arrayListOf())
-        commentAdapter =ItemMyCommentAdapter(mainActivity, arrayListOf())
-
-
+        postingAdapter = ItemCommunitySmallAdapterTotal(mainActivity, arrayListOf())
+        commentAdapter = ItemMyCommentAdapter(mainActivity, arrayListOf(), 3)
         // 게시물 데이터 설정 (옵저버로 관찰)
         mainActivity.communityViewModel.apply {
             // 메인 포스팅
@@ -96,17 +100,46 @@ class TotalFragment() : Fragment() {
                 }
             }
         }
-
     }
 
-    private fun setPostingAdapterListener(){
+    fun initView() {
+        Log.d("initMainView", "~~")
+        mainActivity.communityViewModel.apply {
+            when (selectPosition) {
+                "Main Posting" -> {
+                    postingAdapter.setData(communityLiveData.value!!)
+                }
+                "Popular Posting" -> {
+                    postingAdapter.setData(popularPostingLiveData.value!!)
+                }
+                "My Posting" -> {
+                    postingAdapter.setData(myPostingLiveData.value!!)
+                }
+                "My Comment" -> {
+                    commentAdapter.setData(myCommentLiveData.value!!)
+                }
+            }
+        }
+    }
+
+    private fun setPostingAdapterListener() {
         postingAdapter.apply {
-            setOnItemClickListener(object : ItemCommunitySmallAdapterTotal.OnItemClickListener{
+            setOnItemClickListener(object : ItemCommunitySmallAdapterTotal.OnItemClickListener {
                 override fun onItemClick(item: ReviewInCommunity) {
-                    if (selectPosition =="Main Posting"){
-                        mainActivity.changeFragment(DetailCommunityPostingFragment.newInstance(item.reviewId,"main"))
-                    }else {
-                        mainActivity.changeFragment(DetailCommunityPostingFragment.newInstance(item.reviewId,"sub"))
+                    if (selectPosition == "Main Posting") {
+                        mainActivity.changeFragment(
+                            DetailCommunityPostingFragment.newInstance(
+                                item.reviewId,
+                                "main"
+                            )
+                        )
+                    } else {
+                        mainActivity.changeFragment(
+                            DetailCommunityPostingFragment.newInstance(
+                                item.reviewId,
+                                "sub"
+                            )
+                        )
                     }
                 }
 
@@ -114,22 +147,27 @@ class TotalFragment() : Fragment() {
         }
     }
 
-    private fun setCommentAdapterListener(){
+    private fun setCommentAdapterListener() {
         commentAdapter.apply {
-            setOnItemClickListener(object :ItemMyCommentAdapter.OnItemClickListener{
-                override fun itemClick(reviewId :Int) { //클릭 시 동작
-                    mainActivity.changeFragment(DetailCommunityPostingFragment.newInstance(reviewId,"sub"))
+            setOnItemClickListener(object : ItemMyCommentAdapter.OnItemClickListener {
+                override fun itemClick(reviewId: Int) { //클릭 시 동작
+                    mainActivity.changeFragment(
+                        DetailCommunityPostingFragment.newInstance(
+                            reviewId,
+                            "sub"
+                        )
+                    )
                 }
 
             })
         }
     }
 
-    companion object{
-        fun newInstance(selectPosition:String) =
+    companion object {
+        fun newInstance(selectPosition: String) =
             TotalFragment().apply {
-                arguments= Bundle().apply {
-                    putString("selectPosition",selectPosition)
+                arguments = Bundle().apply {
+                    putString("selectPosition", selectPosition)
                 }
             }
     }

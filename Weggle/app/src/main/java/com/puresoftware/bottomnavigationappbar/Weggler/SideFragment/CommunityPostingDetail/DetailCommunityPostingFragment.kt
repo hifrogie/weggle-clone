@@ -3,17 +3,14 @@ package com.puresoftware.bottomnavigationappbar.Weggler.SideFragment.CommunityPo
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.LocusId
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
@@ -22,10 +19,12 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.puresoftware.bottomnavigationappbar.MainActivity
 import com.puresoftware.bottomnavigationappbar.MyAccount.Manager.ProductManager
+import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.Weggler.Adapter.ItemCommentAdapter
 import com.puresoftware.bottomnavigationappbar.Server.MasterApplication
 import com.puresoftware.bottomnavigationappbar.Weggler.Manager.CommunityCommentManager
 import com.puresoftware.bottomnavigationappbar.Weggler.Manager.CommunityManagerWithReview
+import com.puresoftware.bottomnavigationappbar.Weggler.Model.Comment
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.ReviewInCommunity
 import com.puresoftware.bottomnavigationappbar.Weggler.Unit.MessageFragment
 import com.puresoftware.bottomnavigationappbar.Weggler.Unit.getTimeText
@@ -36,6 +35,7 @@ import java.text.DecimalFormat
 //type : MainFragment에서 왔다면 setMainViewVisibility (뷰 감추기 )
 class DetailCommunityPostingFragment : Fragment() {
     private var reviewId: Int = -1
+    private var parentComment = true
     private var type: String? = null
     private var _binding: FragmentDetailCommunityPostingBinding? = null
     private val binding get() = _binding!!
@@ -45,6 +45,7 @@ class DetailCommunityPostingFragment : Fragment() {
     private lateinit var communityComment: CommunityCommentManager
     private lateinit var communityPost: CommunityManagerWithReview
     private lateinit var callback: OnBackPressedCallback
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -101,6 +102,14 @@ class DetailCommunityPostingFragment : Fragment() {
                     binding.contentText.text = posting.body.text
                     binding.createTime.text = getTimeText(posting.createTime)
                     binding.likeNum.text = posting.likeCount.toString()
+
+//                    binding.userName.text = posting.userInfo.id
+//                    Glide.with(mainActivity)
+//                        .load(posting.userInfo.profileFile)
+//                        .into(binding.userImage)
+
+                    //좋아요 표시
+                    setReviewLike(posting.userLike)
 
                     if (posting.body.type == 1) {
                         setType1()
@@ -160,11 +169,26 @@ class DetailCommunityPostingFragment : Fragment() {
         }
     }
 
+    @SuppressLint("DetachAndAttachSameFragment")
     private fun setUpListener(posting: ReviewInCommunity) {
         binding.backButton.setOnClickListener {
             mainActivity.goBackFragment(this@DetailCommunityPostingFragment)
             if (type == "main") {
                 mainActivity.setMainViewVisibility(true)
+                val total :Fragment?= mainActivity.fragmentManager!!.findFragmentByTag("total")
+                val joint : Fragment? = mainActivity.fragmentManager!!.findFragmentByTag("joint")
+                val free : Fragment? = mainActivity.fragmentManager!!.findFragmentByTag("free")
+                try {
+                    if (total!=null){
+                        (total as TotalFragment).initView()
+                    }
+                    if (joint!=null){
+                        (joint as JointPurchaseFragment).initView()
+                    }
+                    if (free!=null){
+                        (free as FreeTalkFragment).initView()
+                    }
+                }catch (_:Exception){}
             }
         }
 
@@ -176,8 +200,21 @@ class DetailCommunityPostingFragment : Fragment() {
 
         //comment 추가 버튼
         binding.postComment.setOnClickListener {
-            addComment()
+            if (parentComment) {
+                addComment(posting)
+            }else{
+
+            }
         }
+
+        //리뷰 좋아요
+        binding.likeImage.setOnClickListener {
+            reviewLike(posting)
+        }
+        binding.likeNum.setOnClickListener {
+            reviewLike(posting)
+        }
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -211,9 +248,23 @@ class DetailCommunityPostingFragment : Fragment() {
     private fun initComment(reviewId: Int) {
         commentAdapter = ItemCommentAdapter(mainActivity, arrayListOf())
         binding.commentView.commentList.adapter = commentAdapter
+                //클릭 이벤트 적용
+            .apply {
+                setOnItemClickListener(object : ItemCommentAdapter.OnItemClickListener{
+                    override fun userClick(userId: String) {
+                        // go profile
+                    }
 
-        communityComment.getReviewCommentList(
-            reviewId,
+                    override fun likeClick(commentId: Int, like: Boolean) {
+                        commentLike(commentId,like)
+                    }
+
+                    override fun addSubComment(comment: Comment) {}
+
+                })
+            }
+
+        communityComment.getReviewCommentList(reviewId,
             paramFunc = { data, message ->
                 if (message == null) {
                     commentAdapter.setData(data!!)
@@ -266,16 +317,19 @@ class DetailCommunityPostingFragment : Fragment() {
             })
     }
 
-    private fun addComment() {
+    private fun addComment(posting: ReviewInCommunity) {
         binding.commentEdit.apply {
             if (text.toString() != "") {
                 //comment 추가
                 communityComment.addReviewComment(
-                    reviewId,
+                    reviewId, 0,
                     text.toString(),
                     paramFunc = { newData, message ->
                         if (message == null) {
-                            binding.commentNum.text = commentAdapter.addData(newData!!)
+                            posting.commentCount =  commentAdapter.addData(newData!!)
+                            binding.commentNum.text = posting.commentCount.toString()
+                            mainActivity.communityViewModel.updateCommunityData(reviewId,posting)
+                            mainActivity.communityViewModel.updateMyPosting(reviewId,posting)
                             mainActivity.communityViewModel.apply {
                                 addMyCommentData(newData)
                             }
@@ -294,9 +348,40 @@ class DetailCommunityPostingFragment : Fragment() {
     }
 
     // Like or UnLike
-    private fun commitLike() {
+    private fun reviewLike(posting :ReviewInCommunity) {
+        posting.userLike = !posting.userLike
+        if (posting.userLike){
+            posting.userLike = true
+            posting.likeCount+=1
+        }else{
+            posting.userLike = false
+            posting.likeCount-=1
+        }
+        // view model 데이터 갱신
+        mainActivity.communityViewModel.updateCommunityData(reviewId,posting)
+        mainActivity.communityViewModel.updateMyPosting(reviewId,posting)
 
+        binding.likeNum.text = posting.likeCount.toString()
+        communityPost.reviewLike(posting.reviewId,posting.userLike, paramFunc = {
+            if (it){
+                setReviewLike(posting.userLike)
+            }
+        })
     }
+
+    //댓글 좋아요 /취소
+    private fun commentLike(commentId:Int,boolean: Boolean){
+        communityComment.commentLike(commentId,boolean, paramFunc = {})
+    }
+
+    private fun setReviewLike(boolean: Boolean){
+        if (boolean){
+            binding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_24_red)
+        }else{
+            binding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_24)
+        }
+    }
+
 
     private fun setType1() {
         binding.type1.visibility = View.VISIBLE
