@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -22,6 +23,7 @@ import com.puresoftware.bottomnavigationappbar.Server.MasterApplication
 import com.puresoftware.bottomnavigationappbar.SideMenu.SettingFragment
 import com.puresoftware.bottomnavigationappbar.Weggler.ViewModel.CommunityViewModel
 import com.puresoftware.bottomnavigationappbar.MyAccount.ViewModel.MyAccountViewModel
+import com.puresoftware.bottomnavigationappbar.SideMenu.NavigationFragment
 import com.puresoftware.bottomnavigationappbar.Weggler.WegglerFragment
 import com.puresoftware.bottomnavigationappbar.brands.BrandsFragment
 import com.puresoftware.bottomnavigationappbar.databinding.ActivityMainBinding
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var backPressTime:Long = 0
     private lateinit var callback :OnBackPressedCallback
+    lateinit var drawerLayout: DrawerLayout
     // fragment
     // https://aries574.tistory.com/382
     var homeFragment: HomeFragment? = null // 홈
@@ -57,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        drawerLayout = binding.drawLayout
         //masterApp init //////////////
         masterApp.createRetrofit(this@MainActivity)
         //////////////////////
@@ -167,18 +170,10 @@ class MainActivity : AppCompatActivity() {
             Log.i(TAG, "weggler btn 선택됨")
         }
 
-
-        //좌측 햄버거 뷰 동작
-        binding.mainNavi.inflateHeaderView(R.layout.navigation_inner).apply {
-            //go setting
-            this.findViewById<ImageView>(R.id.nav_setting).setOnClickListener {
-                setSubFragmentView(SettingFragment())
-            }
-            //go close
-            this.findViewById<ImageView>(R.id.nav_close).setOnClickListener {
-                binding.drawLayout.close()
-            }
-        }
+        // 좌측 뷰 나타내기
+        fragmentManager!!.beginTransaction()
+            .replace(R.id.main_navi,NavigationFragment())
+            .commit()
 
 
     }
@@ -218,24 +213,17 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(null)
             .commit()
     }
-
-    // sub view change
-    private fun setSubFragmentView(goFragment: Fragment){
-        fragmentManager!!.beginTransaction().replace(R.id.slide_layout, goFragment)
-            .addToBackStack(null)
-            .commit()
-        setSubFragment()
-    }
-
     // side View
     fun setSubFragment(){
         val state = binding.frameLayout.panelState
         // 닫힌 상태일 경우 열기
         if (state == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            binding.frameLayout.isTouchEnabled =false // 슬라이드 막기
             binding.frameLayout.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
         }
         // 열린 상태일 경우 닫기
         else if (state == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            binding.frameLayout.isTouchEnabled =true //슬라이드 허용
             binding.frameLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
         }
     }

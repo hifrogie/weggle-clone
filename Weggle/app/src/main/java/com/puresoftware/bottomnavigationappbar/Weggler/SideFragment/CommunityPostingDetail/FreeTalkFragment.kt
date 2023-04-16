@@ -54,7 +54,7 @@ class FreeTalkFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postingAdapter  =ItemCommunitySmallAdapterFree(mainActivity, arrayListOf())
-        commentAdapter =ItemMyCommentAdapter(mainActivity, arrayListOf())
+        commentAdapter =ItemMyCommentAdapter(mainActivity, arrayListOf(),2)
 
         // 게시물 데이터 설정 (옵저버로 관찰)
         mainActivity.communityViewModel.apply {
@@ -97,7 +97,25 @@ class FreeTalkFragment(
             }
         }
     }
-
+    fun initView() {
+        Log.d("initMainView", "~~")
+        mainActivity.communityViewModel.apply {
+            when (selectPosition) {
+                "Main Posting" -> {
+                    postingAdapter.setData(communityLiveData.value!!)
+                }
+                "Popular Posting" -> {
+                    postingAdapter.setData(popularPostingLiveData.value!!)
+                }
+                "My Posting" -> {
+                    postingAdapter.setData(myPostingLiveData.value!!)
+                }
+                "My Comment" -> {
+                    commentAdapter.setData(myCommentLiveData.value!!)
+                }
+            }
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

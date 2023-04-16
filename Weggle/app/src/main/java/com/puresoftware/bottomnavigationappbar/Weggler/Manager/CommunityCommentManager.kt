@@ -1,6 +1,6 @@
 package com.puresoftware.bottomnavigationappbar.Weggler.Manager
 
-import com.puresoftware.bottomnavigationappbar.Weggler.Model.BodyComment
+import com.puresoftware.bottomnavigationappbar.Weggler.Model.CommentPost
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.Comment
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.CommentList
 import com.puresoftware.bottomnavigationappbar.Server.MasterApplication
@@ -50,8 +50,9 @@ class CommunityCommentManager(
     }
 
     //댓글 추가하기
-    fun addReviewComment(reviewId: Int, body:String,paramFunc: (Comment?, String?) -> Unit){
-        wApp.service.addReviewComment(reviewId, BodyComment(body))
+    fun addReviewComment(reviewId: Int, parentCommentId:Int, body:String
+                         ,paramFunc: (Comment?, String?) -> Unit){
+        wApp.service.addReviewComment(reviewId, CommentPost(parentCommentId,body))
             .enqueue(object :Callback<Comment>{
                 override fun onResponse(call: Call<Comment>, response: Response<Comment>) {
                     if (response.isSuccessful){
@@ -65,6 +66,23 @@ class CommunityCommentManager(
                     paramFunc(null,"error")
                 }
 
+            })
+    }
+
+    //댓글 좋아요
+    fun commentLike(commentId:Int,like:Boolean,paramFunc: (Boolean) -> Unit){
+        wApp.service.putCommentLike(commentId, like)
+            .enqueue(object :Callback<String>{
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    if (response.isSuccessful){
+                        paramFunc(true)
+                    }else{
+                        paramFunc(false)
+                    }
+                }
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    paramFunc(false)
+                }
             })
     }
 }

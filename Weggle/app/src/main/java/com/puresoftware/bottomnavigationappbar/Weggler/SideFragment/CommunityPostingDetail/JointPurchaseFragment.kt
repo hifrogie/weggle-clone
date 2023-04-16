@@ -51,7 +51,7 @@ class JointPurchaseFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postingAdapter = ItemCommunitySmallAdapterJoint(mainActivity, arrayListOf())
-        commentAdapter = ItemMyCommentAdapter(mainActivity, arrayListOf())
+        commentAdapter = ItemMyCommentAdapter(mainActivity, arrayListOf(),1)
 
 
         // 게시물 데이터 설정 (옵저버로 관찰)
@@ -94,9 +94,26 @@ class JointPurchaseFragment() : Fragment() {
                 }
             }
         }
-
     }
-
+    fun initView() {
+        Log.d("initMainView", "~~")
+        mainActivity.communityViewModel.apply {
+            when (selectPosition) {
+                "Main Posting" -> {
+                    postingAdapter.setData(communityLiveData.value!!)
+                }
+                "Popular Posting" -> {
+                    postingAdapter.setData(popularPostingLiveData.value!!)
+                }
+                "My Posting" -> {
+                    postingAdapter.setData(myPostingLiveData.value!!)
+                }
+                "My Comment" -> {
+                    commentAdapter.setData(myCommentLiveData.value!!)
+                }
+            }
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -107,10 +124,7 @@ class JointPurchaseFragment() : Fragment() {
             setOnItemClickListener(object : ItemCommunitySmallAdapterJoint.OnItemClickListener {
                 override fun onItemClick(item: ReviewInCommunity) {
                     mainActivity.changeFragment(
-                        DetailCommunityPostingFragment.newInstance(
-                            item.reviewId,
-                            "sub"
-                        )
+                        DetailCommunityPostingFragment.newInstance(item.reviewId, "sub")
                     )
                 }
 

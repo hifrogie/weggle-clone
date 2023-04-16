@@ -1,12 +1,14 @@
 package com.puresoftware.bottomnavigationappbar.Weggler.Adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.puresoftware.bottomnavigationappbar.MainActivity
+import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.*
 import com.puresoftware.bottomnavigationappbar.Weggler.Unit.getTimeText
 import com.puresoftware.bottomnavigationappbar.databinding.ItemCommunitySmallFreeBinding
@@ -100,6 +102,14 @@ class ItemCommunitySmallAdapterTotal(
                     .into(mainImage)
                 likeNum.text = data.likeCount.toString()
                 commendNum.text = data.commentCount.toString()
+
+                //좋아요 표시
+                if (data.userLike){
+                    onJointLike()
+                }else{
+                    offJointLike()
+                }
+
                 //클릭 이벤트
                 root.setOnClickListener {
                     onItemClickListener?.onItemClick(data)
@@ -121,6 +131,15 @@ class ItemCommunitySmallAdapterTotal(
                     .into(mainImage)
                 likeNum.text = data.likeCount.toString()
                 commentNum.text = data.commentCount.toString()
+
+                //좋아요 표시
+                if (data.userLike){
+                    onFreeLike()
+                    Log.d("데이터 확인합니다",data.userLike.toString()+","+data.body.text)
+                }else{
+                    offFreeLike()
+                    Log.d("데이터 확인합니다",data.userLike.toString()+","+data.body.text)
+                }
 
                 //클릭 이벤트
                 root.setOnClickListener {
@@ -145,6 +164,12 @@ class ItemCommunitySmallAdapterTotal(
         dataSet = dataList
         notifyDataSetChanged()
     }
-
-
+    private fun ItemCommunitySmallFreeBinding.onFreeLike() =
+        likeImage.setImageResource(R.drawable.ic_baseline_favorite_24_red)
+    private fun ItemCommunitySmallFreeBinding.offFreeLike() =
+        likeImage.setImageResource(R.drawable.ic_baseline_favorite_24)
+    private fun ItemCommunitySmallJointBinding.onJointLike() =
+        likeImage.setImageResource(R.drawable.ic_baseline_favorite_24_red)
+    private fun ItemCommunitySmallJointBinding.offJointLike() =
+        likeImage.setImageResource(R.drawable.ic_baseline_favorite_24)
 }
