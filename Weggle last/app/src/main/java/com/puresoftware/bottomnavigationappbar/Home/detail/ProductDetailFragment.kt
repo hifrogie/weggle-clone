@@ -31,7 +31,7 @@ private val tabList = listOf("상품정보","리뷰","문의","주문정보")
     ): View? {
         binding = FragmentProductDetailBinding.inflate(inflater, container, false)
 
-        binding.detailTabViewpager.adapter = DetailTabViewPagerAdapter(activity as MainActivity,soonList[position].contentFiles)
+        binding.detailTabViewpager.adapter = DetailTabViewPagerAdapter(activity as MainActivity,soonList,position)
 
         TabLayoutMediator(binding.detailTab,binding.detailTabViewpager){ tab, pos ->
             tab.text = tabList[pos]

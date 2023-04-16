@@ -2,12 +2,11 @@ package com.puresoftware.bottomnavigationappbar.Home.manager
 
 import android.util.Log
 import com.puresoftware.bottomnavigationappbar.Home.GroupList
-import com.puresoftware.bottomnavigationappbar.Home.data.GroupBuyData
-import com.puresoftware.bottomnavigationappbar.Home.data.PagenationList
-import com.puresoftware.bottomnavigationappbar.Home.data.VideoData
+import com.puresoftware.bottomnavigationappbar.Home.data.*
 import com.puresoftware.bottomnavigationappbar.Server.MasterApplication
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.Product
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.ProductList
+import com.puresoftware.bottomnavigationappbar.Weggler.Model.ReviewInCommunity
 import com.puresoftware.bottomnavigationappbar.brands.data.MetaData
 import com.puresoftware.bottomnavigationappbar.brands.data.MetaInsideData
 import retrofit2.Call
@@ -68,6 +67,22 @@ class GroupManager(private val wApp: MasterApplication) {
                     }
                 }
                 override fun onFailure(call: Call<MetaData>, t: Throwable) {
+                    Log.d("실패",t.toString())
+                }
+
+            })
+    }
+    fun getReview(id:Int,paramFunc:(ArrayList<ReviewInnerData>) -> Unit){
+        wApp.service.getReViewLee(id)
+            .enqueue(object : Callback<ArrayList<ReviewInnerData>>{
+                override fun onResponse(
+                    call: Call<ArrayList<ReviewInnerData>>,
+                    response: Response<ArrayList<ReviewInnerData>>,
+                ) {
+                    paramFunc(response.body()!!)
+                }
+
+                override fun onFailure(call: Call<ArrayList<ReviewInnerData>>, t: Throwable) {
                     Log.d("실패",t.toString())
                 }
 

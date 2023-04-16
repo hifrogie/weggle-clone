@@ -9,4 +9,5 @@ data class BodyList(val image:List<String>,
                     val price:Int,
                     val duration:String,
                     val benefit:String,
-                    val contentFiles:List<String>)
+                    val contentFiles:List<String>,
+                    val postId:Int)

@@ -57,7 +57,8 @@ class FashionFragment : Fragment() {
                     it[i].body.price,
                     it[i].body.duration,
                     it[i].body.benefit,
-                    it[i].contentFiles))
+                    it[i].contentFiles,
+                    it[i].productId))
             }
             binding.fashionRecycler.adapter = context?.let {
                 SoonGroupbuyAdapter(foodList, it)

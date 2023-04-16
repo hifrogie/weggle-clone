@@ -11,7 +11,7 @@ import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.databinding.FragmentFashionBinding
 import com.puresoftware.bottomnavigationappbar.databinding.FragmentProductInfoBinding
 
-class ProductInfoFragment(val list:List<String>) : Fragment() {
+class ProductInfoFragment(private val list:List<String>) : Fragment() {
     private lateinit var binding:FragmentProductInfoBinding
 
     override fun onCreateView(
