@@ -66,10 +66,25 @@ class CommunityViewModel :ViewModel(){
     }
 
     //내 포스팅 데이터 수정
-    fun updateMyPostingData(currentData:ReviewInCommunity, newData:ReviewInCommunity){
-        val index = myPostingLiveData.value?.indexOf(currentData)
-        if (index != null) {
-            myPostingLiveData.value?.set(index,newData)
+    fun updateCommunityData(reviewId : Int, newData:ReviewInCommunity){
+        val mainData = communityLiveData.value?.find { it.reviewId == reviewId }
+        val mainIndex = communityLiveData.value?.indexOf(mainData)
+        if (mainData!=null && mainIndex!=null && mainIndex!=-1){
+            communityLiveData.value?.set(mainIndex,newData)
+        }
+        val popularData = popularPostingLiveData.value?.find { it.reviewId==reviewId }
+        val popularIndex = popularPostingLiveData.value?.indexOf(popularData)
+        if (popularData!=null && popularIndex!=null && popularIndex!=-1){
+            popularPostingLiveData.value?.set(popularIndex,newData)
+        }
+
+    }
+
+    fun updateMyPosting(reviewId:Int,newData: ReviewInCommunity){
+        val myData = myPostingLiveData.value?.find{it.reviewId == reviewId}
+        val myIndex = myPostingLiveData.value?.indexOf(myData)
+        if (myData!=null && myIndex!=null && myIndex!=-1){
+            myPostingLiveData.value?.set(myIndex,newData)
         }
     }
 
