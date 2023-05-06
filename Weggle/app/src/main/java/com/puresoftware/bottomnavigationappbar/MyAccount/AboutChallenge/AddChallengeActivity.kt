@@ -1,4 +1,4 @@
-package com.puresoftware.bottomnavigationappbar.MyAccount
+package com.puresoftware.bottomnavigationappbar.MyAccount.AboutChallenge
 
 import android.app.AlertDialog
 import android.content.Intent
