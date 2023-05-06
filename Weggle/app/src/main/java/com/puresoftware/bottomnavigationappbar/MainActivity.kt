@@ -3,11 +3,11 @@ package com.puresoftware.bottomnavigationappbar
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.puresoftware.bottomnavigationappbar.MyAccount.Manager.UserManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -18,12 +18,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.puresoftware.bottomnavigationappbar.CenterWeggle.CenterWeggleFragment
 import com.puresoftware.bottomnavigationappbar.Home.HomeFragment
+import com.puresoftware.bottomnavigationappbar.MyAccount.Manager.RelationManager
 import com.puresoftware.bottomnavigationappbar.MyAccount.MyAccountFragment
 import com.puresoftware.bottomnavigationappbar.Server.MasterApplication
-import com.puresoftware.bottomnavigationappbar.SideMenu.SettingFragment
 import com.puresoftware.bottomnavigationappbar.Weggler.ViewModel.CommunityViewModel
 import com.puresoftware.bottomnavigationappbar.MyAccount.ViewModel.MyAccountViewModel
-import com.puresoftware.bottomnavigationappbar.SideMenu.NavigationFragment
+import com.puresoftware.bottomnavigationappbar.SideMenu.MainNavigationFragment
 import com.puresoftware.bottomnavigationappbar.Weggler.WegglerFragment
 import com.puresoftware.bottomnavigationappbar.brands.BrandsFragment
 import com.puresoftware.bottomnavigationappbar.databinding.ActivityMainBinding
@@ -65,6 +65,31 @@ class MainActivity : AppCompatActivity() {
         masterApp.createRetrofit(this@MainActivity)
         //////////////////////
 
+        // user info init////
+        UserManager(masterApp)
+            .getUser(paramFun = { user,_->
+                if (user!=null){
+                    myAccountViewModel.userProfile=user
+                    // 좌측 뷰 나타내기
+                    fragmentManager!!.beginTransaction()
+                        .replace(R.id.main_navi,MainNavigationFragment())
+                        .commit()
+                }
+            })
+        //팔로잉, 팔로워 리스트 얻기
+        RelationManager(masterApp)
+            .getMyFollowers(paramFunc = {data,_ ->
+                if (data!=null){
+                    myAccountViewModel.myFollowers.value=data
+                }
+            })
+        RelationManager(masterApp)
+            .getMyFollowings(paramFunc = {data,_->
+                if (data!=null){
+                    myAccountViewModel.myFollowings.value = data
+                }
+            })
+        ///////////////
 
         // toolbar control ///////////////
         var toolbar = binding.toolbar
@@ -170,11 +195,6 @@ class MainActivity : AppCompatActivity() {
             Log.i(TAG, "weggler btn 선택됨")
         }
 
-        // 좌측 뷰 나타내기
-        fragmentManager!!.beginTransaction()
-            .replace(R.id.main_navi,NavigationFragment())
-            .commit()
-
 
     }
 
@@ -213,6 +233,18 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(null)
             .commit()
     }
+
+    // sub view change
+    fun setSubFragmentView(goFragment: Fragment,stack:Int){
+        fragmentManager!!.beginTransaction().replace(R.id.slide_layout, goFragment)
+            .addToBackStack(null)
+            .commit()
+        if(stack==1) {
+            setSubFragment()
+        }
+        }
+
+
     // side View
     fun setSubFragment(){
         val state = binding.frameLayout.panelState
