@@ -4,21 +4,28 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.puresoftware.bottomnavigationappbar.MainActivity
+import com.puresoftware.bottomnavigationappbar.MyAccount.AboutChallenge.AddChallengeActivity
+import com.puresoftware.bottomnavigationappbar.MyAccount.AboutRelation.FollowDataFragment
 import com.puresoftware.bottomnavigationappbar.MyAccount.AboutReview.AddReviewActivity
 import com.puresoftware.bottomnavigationappbar.MyAccount.AboutReview.DetailReviewFragment
 import com.puresoftware.bottomnavigationappbar.MyAccount.Adapter.KeywordAdapter
 import com.puresoftware.bottomnavigationappbar.MyAccount.Adapter.MyFeedReviewAdapter
+import com.puresoftware.bottomnavigationappbar.MyAccount.Manager.RelationManager
 import com.puresoftware.bottomnavigationappbar.MyAccount.Manager.ReviewManager
 import com.puresoftware.bottomnavigationappbar.MyAccount.Manager.UserManager
 import com.puresoftware.bottomnavigationappbar.MyAccount.Model.ReviewData
+import com.puresoftware.bottomnavigationappbar.MyAccount.Model.User
+import com.puresoftware.bottomnavigationappbar.MyAccount.Model.UserInfo
 import com.puresoftware.bottomnavigationappbar.MyAccount.SubFragment.UpdateProfileFragment
 import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.databinding.MyAccountFragmentBinding
@@ -73,40 +80,14 @@ class MyAccountFragment : Fragment() {
         }
 
         initView()
-        setUpListener()
+
     }
 
     private fun initView() {
-        //리뷰 리스트 불러오기
-        ReviewManager(mainActivity.masterApp, null)
-            .getReviewListInAccount(paramFunc = { data, _ ->
-                if (data != null) {
-                    binding.postingNum.text = data.size.toString()
-                    //adapter 연결
-                    binding.noPostingView.visibility = View.GONE
-                    binding.postingList.apply {
-                        visibility = View.VISIBLE
-                        adapter = MyFeedReviewAdapter(mainActivity, data).apply {
-                            setOnItemClickListener(object :
-                                MyFeedReviewAdapter.OnItemClickListener {
-                                override fun itemClick(review: ReviewData) {
-                                    mainActivity.setMainViewVisibility(false)
-                                    mainActivity.changeFragment(DetailReviewFragment
-                                        .newInstance(review.reviewId)
-                                    )
-                                }
-                            })
-                        }
-                    }
 
-                } else {
-                    binding.noPostingView.visibility = View.VISIBLE
-                    binding.postingList.visibility = View.GONE
-                }
-            })
-
+        // 유저 정보 불러오기
         UserManager(mainActivity.masterApp)
-            .getUser { user, _ ->
+            .getUser(paramFun = { user, _ ->
                 if (user != null) {
                     mainActivity.myAccountViewModel.userProfile = user
 
@@ -147,15 +128,62 @@ class MyAccountFragment : Fragment() {
                     user.body?.userKeyword?.let {
                         binding.tagBox.adapter = KeywordAdapter(mainActivity,it,"userProfile")
                     }
+
+                    // 유저 조회로 리뷰 리스트 얻기
+                    ReviewManager(mainActivity.masterApp,null)
+                        .getUserReviewData(user.name, paramFunc = {data,_->
+                            if (data != null && data.size>0) {
+                                binding.postingNum.text = data.size.toString()
+                                //adapter 연결
+                                binding.noPostingView.visibility = View.GONE
+                                binding.postingList.apply {
+                                    visibility = View.VISIBLE
+                                    adapter = MyFeedReviewAdapter(mainActivity, data).apply {
+                                        setOnItemClickListener(object :
+                                            MyFeedReviewAdapter.OnItemClickListener {
+                                            override fun itemClick(review: ReviewData) {
+                                                mainActivity.setMainViewVisibility(false)
+                                                mainActivity.changeFragment(DetailReviewFragment
+                                                    .newInstance(review.reviewId,"main")
+                                                )
+                                            }
+                                        })
+                                    }
+                                }
+
+                            } else {
+                                binding.noPostingView.visibility = View.VISIBLE
+                                binding.postingList.visibility = View.GONE
+                            }
+                        })
+
+                    //팔로잉, 팔로워 리스트 얻기
+                    mainActivity.myAccountViewModel.myFollowers.observe(mainActivity,
+                        Observer { binding.followerNum.text = it.size.toString() })
+
+                    mainActivity.myAccountViewModel.myFollowings.observe(mainActivity,
+                        Observer { binding.followingNum.text = it.size.toString() })
+
+                    setUpListener(user)
                 }
-            }
+            })
 
     }
 
-    private fun setUpListener() {
+    private fun setUpListener(user: User) {
         binding.userImage.setOnClickListener {
             mainActivity.setMainViewVisibility(false)
             mainActivity.changeFragment(UpdateProfileFragment())
+        }
+
+        binding.followerBox.setOnClickListener {
+            mainActivity.setMainViewVisibility(false)
+            mainActivity.changeFragment(FollowDataFragment.newInstance(user.name ,0,"main"))
+        }
+
+        binding.followingBox.setOnClickListener {
+            mainActivity.setMainViewVisibility(false)
+            mainActivity.changeFragment(FollowDataFragment.newInstance(user.name ,1,"main"))
         }
     }
 

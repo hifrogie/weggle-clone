@@ -19,6 +19,8 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.puresoftware.bottomnavigationappbar.MainActivity
 import com.puresoftware.bottomnavigationappbar.MyAccount.Manager.ProductManager
+import com.puresoftware.bottomnavigationappbar.MyAccount.Model.UserInfo
+import com.puresoftware.bottomnavigationappbar.MyAccount.AboutRelation.UserProfileFragment
 import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.Weggler.Adapter.ItemCommentAdapter
 import com.puresoftware.bottomnavigationappbar.Server.MasterApplication
@@ -35,10 +37,11 @@ import java.text.DecimalFormat
 //type : MainFragment에서 왔다면 setMainViewVisibility (뷰 감추기 )
 class DetailCommunityPostingFragment : Fragment() {
     private var reviewId: Int = -1
-    private var parentComment = true
+    private var parentComment : Int = 0
     private var type: String? = null
     private var _binding: FragmentDetailCommunityPostingBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var mainActivity: MainActivity
     private lateinit var wegglerApp: MasterApplication
     private lateinit var commentAdapter: ItemCommentAdapter
@@ -88,6 +91,7 @@ class DetailCommunityPostingFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         communityComment = CommunityCommentManager(wegglerApp)
         communityPost = CommunityManagerWithReview(wegglerApp)
         initView()
@@ -103,10 +107,17 @@ class DetailCommunityPostingFragment : Fragment() {
                     binding.createTime.text = getTimeText(posting.createTime)
                     binding.likeNum.text = posting.likeCount.toString()
 
-//                    binding.userName.text = posting.userInfo.id
-//                    Glide.with(mainActivity)
-//                        .load(posting.userInfo.profileFile)
-//                        .into(binding.userImage)
+                    //유저 정보 얻기
+                    posting.userInfo?.let {user->
+                        binding.userName.text = user.id
+                        Glide.with(mainActivity)
+                            .load(user.profileFile)
+                            .into(binding.userImage)
+                        binding.userImage.setOnClickListener {
+                            // go profile
+                            mainActivity.changeFragment(UserProfileFragment.newInstance(user.id,"sub"))
+                        }
+                    }
 
                     //좋아요 표시
                     setReviewLike(posting.userLike)
@@ -147,6 +158,7 @@ class DetailCommunityPostingFragment : Fragment() {
                     //product 구분
                     if (posting.body.jointProductId >= 0) {
                         setJointProduct(posting.body.jointProductId)
+
                     } else {
                         binding.groupBuyProduct.visibility = View.GONE
                     }
@@ -200,11 +212,7 @@ class DetailCommunityPostingFragment : Fragment() {
 
         //comment 추가 버튼
         binding.postComment.setOnClickListener {
-            if (parentComment) {
-                addComment(posting)
-            }else{
-
-            }
+            addComment(posting)
         }
 
         //리뷰 좋아요
@@ -213,6 +221,10 @@ class DetailCommunityPostingFragment : Fragment() {
         }
         binding.likeNum.setOnClickListener {
             reviewLike(posting)
+        }
+
+        binding.childCloseButton.setOnClickListener {
+            cancelChildComment()
         }
 
     }
@@ -247,19 +259,29 @@ class DetailCommunityPostingFragment : Fragment() {
 
     private fun initComment(reviewId: Int) {
         commentAdapter = ItemCommentAdapter(mainActivity, arrayListOf())
-        binding.commentView.commentList.adapter = commentAdapter
-                //클릭 이벤트 적용
+        binding.commentListView.commentList.adapter = commentAdapter
+            //클릭 이벤트 적용
             .apply {
-                setOnItemClickListener(object : ItemCommentAdapter.OnItemClickListener{
-                    override fun userClick(userId: String) {
+                setOnItemClickListener(object : ItemCommentAdapter.OnItemClickListener {
+
+                    override fun userClick(userInfo: UserInfo) {
                         // go profile
+                        mainActivity.changeFragment(UserProfileFragment.newInstance(userInfo.id,"sub"))
                     }
 
                     override fun likeClick(commentId: Int, like: Boolean) {
-                        commentLike(commentId,like)
+                        commentLike(commentId, like)
                     }
 
-                    override fun addSubComment(comment: Comment) {}
+                    @SuppressLint("SetTextI18n")
+                    override fun addSubComment(comment: Comment) {
+                        //답글 달기
+                        binding.childTextBox.visibility = View.VISIBLE
+                        parentComment = comment.commentId
+                        comment.userInfo?.let {
+                            binding.childText.text = "${it.id}님에게 답글 남기는 중"
+                        }
+                    }
 
                 })
             }
@@ -322,11 +344,15 @@ class DetailCommunityPostingFragment : Fragment() {
             if (text.toString() != "") {
                 //comment 추가
                 communityComment.addReviewComment(
-                    reviewId, 0,
+                    reviewId, parentComment,
                     text.toString(),
                     paramFunc = { newData, message ->
                         if (message == null) {
-                            posting.commentCount =  commentAdapter.addData(newData!!)
+                            if (parentComment!=0){ //자식 추가
+                                posting.commentCount = commentAdapter.addChildData(newData!!)
+                            }else { //부모 추가
+                                posting.commentCount = commentAdapter.addData(newData!!)
+                            }
                             binding.commentNum.text = posting.commentCount.toString()
                             mainActivity.communityViewModel.updateCommunityData(reviewId,posting)
                             mainActivity.communityViewModel.updateMyPosting(reviewId,posting)
@@ -339,10 +365,17 @@ class DetailCommunityPostingFragment : Fragment() {
                         }
                     })
             }
+            if (parentComment!=0){ //자식 댓글 추가 상태면 제거
+                cancelChildComment()
+            }
             setText("")
         }
     }
 
+    private fun cancelChildComment(){
+        binding.childTextBox.visibility = View.GONE
+        parentComment = 0
+    }
     private fun delComment() {
 
     }

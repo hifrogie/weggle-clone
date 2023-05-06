@@ -12,26 +12,35 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.puresoftware.bottomnavigationappbar.MainActivity
+import com.puresoftware.bottomnavigationappbar.MyAccount.Adapter.ItemProductHoAdapter
+import com.puresoftware.bottomnavigationappbar.MyAccount.Manager.ProductManager
 import com.puresoftware.bottomnavigationappbar.MyAccount.Manager.ReviewManager
 import com.puresoftware.bottomnavigationappbar.R
 import com.puresoftware.bottomnavigationappbar.Weggler.Unit.MessageFragment
+import com.puresoftware.bottomnavigationappbar.Weggler.Unit.getTimeText
 import com.puresoftware.bottomnavigationappbar.databinding.FragmentDetailReviewBinding
 import org.mozilla.javascript.tools.jsc.Main
 
+// 리뷰 상세보기
 class DetailReviewFragment : Fragment() {
     private var reviewId = -1
+    private var type = ""
     private lateinit var mainActivity: MainActivity
-    private lateinit var onBackPressedCallback: OnBackPressedCallback
+    private var onBackPressedCallback: OnBackPressedCallback? = null
     private var _binding: FragmentDetailReviewBinding? = null
     private val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
-        onBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                backEvent()
+
+        if (type!="feed") {
+            onBackPressedCallback = object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    backEvent()
+                }
             }
+            requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback!!)
         }
     }
 
@@ -39,6 +48,7 @@ class DetailReviewFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             reviewId = it.getInt("reviewId")
+            type = it.getString("type").toString()
         }
     }
 
@@ -53,6 +63,9 @@ class DetailReviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (type=="feed"){
+            binding.backBox.visibility = View.GONE
+        }
         ReviewManager(mainActivity.masterApp, null)
             .getDetailReview(reviewId, paramFunc = { data, message ->
                 if (data != null) {
@@ -77,14 +90,23 @@ class DetailReviewFragment : Fragment() {
                         videoView.setOnCompletionListener {
                             playButton.visibility = View.VISIBLE
                         }
-
+                        createTime.text = getTimeText(data.createTime)
                         likeNum.text = data.likeCount.toString()
                         commentNum.text = data.commentCount.toString()
                         bodyText.text = data.body.reviewText
-//                        userName.text = data.userInfo.id
-//                        Glide.with(mainActivity)
-//                            .load(data.userInfo.profileFile)
-//                            .into(userImage)
+
+                        data.userInfo?.let { user->
+                            userName.text = user.id
+                            Glide.with(mainActivity)
+                                .load(user.profileFile)
+                                .into(userImage)
+                        }
+
+                        // 하단 프로덕트 리스트에 리뷰 남긴 프로덕트 추가
+                        var productList= arrayListOf<Int>()
+                        if (data.body.additionalProduct!=null) productList=data.body.additionalProduct!!
+                        productList.add(0,data.productId)
+                        setProductList(productList)
 
                     }
 
@@ -119,6 +141,15 @@ class DetailReviewFragment : Fragment() {
         binding.reviewBox.likeImage.setOnClickListener { setLikeReview() }
     }
 
+    private fun setProductList(productList: ArrayList<Int>){
+        ProductManager(mainActivity.masterApp)
+            .getAdditionalProductList(productList, paramFunc = { dataSet,_->
+                if(dataSet!=null){
+                    binding.reviewBox.productListView.adapter = ItemProductHoAdapter(mainActivity,dataSet)
+                }
+            })
+    }
+
     private fun getThumbnail(path: String) {
         Glide.with(mainActivity)
             .load(path)
@@ -145,17 +176,22 @@ class DetailReviewFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(reviewId: Int) =
+        fun newInstance(reviewId: Int,type:String) =
             DetailReviewFragment().apply {
                 arguments = Bundle().apply {
                     putInt("reviewId", reviewId)
+                    putString("type",type)
                 }
             }
     }
 
     // 뒤로가기 이벤트 처리
     private fun backEvent() {
-        mainActivity.goBackFragment(this@DetailReviewFragment)
-        mainActivity.setMainViewVisibility(true)
+        if (type!="feed"){
+            mainActivity.goBackFragment(this@DetailReviewFragment)
+            if (type == "main") {
+                mainActivity.setMainViewVisibility(true)
+            }
+        }
     }
 }

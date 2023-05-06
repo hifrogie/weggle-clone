@@ -25,9 +25,14 @@ interface RetrofitService {
     fun logoutUser():Call<String>
 
     //유저 정보 얻기
-    @GET("users")
+    @GET("loginUser")
     fun getUserInfo() : Call<User>
 
+    //유저 이름으로 유저 검색
+    @GET("users/{id}")
+    fun searchUser(
+        @Path("id") userId: String?
+    ) : Call<User>
     //유저 삭제
     @DELETE("users")
     fun deleteUser(
@@ -83,15 +88,22 @@ interface RetrofitService {
     fun getProductFromId(
         @Path("productId") productId : Int,
     ): Call<Product>
+
+    //프로덕트 리스트 조회
+    @GET("productByIds")
+    fun getProductListFromIds(
+        @Query(value = "productIds", encoded = true) productIds : ArrayList<Int>
+    ): Call<ArrayList<Product>>
     ///////////////////////////////////
 
     //리뷰 관련////////////////////////////
 
-    //리뷰 얻기
-    @GET("products/{productId}/reviewsByCreateTime")
+    //리뷰 얻기 (시간 순 )
+    @GET("products/{productId}/reviews")
     fun getCommunityReViews(
         @Path("productId") productId : Int,
-    ): Call<ArrayList<ReviewInCommunity>>
+        @Query(value = "sort", encoded = true) sort: List<String>?,
+    ): Call<ReviewListInCommunity>
 
     //리뷰 추가 -커뮤니티
     @Multipart
@@ -116,6 +128,10 @@ interface RetrofitService {
     fun getReviewsByLike(
         @Path("productId") productId: Int,
     ): Call<ArrayList<ReviewInCommunity>>
+
+    // 팔로우 유저 리뷰 얻기
+    @GET("reviewsByFollowingUser")
+    fun getFollowingUserReviews():Call<ArrayList<ReviewData>>
 
     //내 리뷰 조회
     @GET("reviewsByUser")
@@ -142,10 +158,13 @@ interface RetrofitService {
     ) : Call<CommentList>
 
     //댓글 추가
+
     @POST("reviews/{reviewId}/comments")
     fun addReviewComment(
         @Path("reviewId")reviewId: Int,
         @Body body : CommentPost,
+//        @Field("parentCommentId") parentCommentId : Int?,
+//        @Field("body") body : String,
     ) : Call<Comment>
 
     // 리뷰 아이디로 커뮤니티 리뷰 얻기
@@ -173,5 +192,51 @@ interface RetrofitService {
         @Path("commentId")commentId: Int,
         @Query(value = "like") like : Boolean,
     ):Call<String>
-    /////////////////////////////////////////////
+    /////////////////////////////////////////////'
+
+
+    // user ranking
+    @GET("reviewsByUserRank")
+    fun getUserRanking() : Call<ArrayList<RankingUser>>
+
+    // user 기반 review 조회
+    @GET("users/{userId}/reviewsByUser")
+    fun getUserReviews(
+        @Path("userId") userId:String,
+    ) : Call<ArrayList<ReviewData>>
+
+    // Relation 관련
+
+    //get followers
+    @GET("followers")
+    fun getMyFollowerList() : Call<ArrayList<FollowData>>
+
+    //get followings
+    @GET("followings")
+    fun getMyFollowingList() : Call<ArrayList<FollowData>>
+
+    //get view user followers
+    @GET("users/{userId}/followers/")
+    fun getUserFollowerList(
+        @Path("userId")userId: String
+    ):Call<ArrayList<FollowData>>
+
+    //get view user followings
+    @GET("users/{userId}/followings/")
+    fun getUserFollowingList(
+        @Path("userId")userId: String
+    ):Call<ArrayList<FollowData>>
+
+    //user following
+    @POST("followings/{followingId}")
+    fun postFollowingUser(
+        @Path("followingId") followingId : String,
+        @Body body : RequestBody,
+    ) : Call<String>
+
+    // un following
+    @DELETE("followings/{followingId}")
+    fun delFollowingUser(
+        @Path("followingId") followingId : String,
+    ) : Call<String>
 }
