@@ -2,11 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-<com.google.android.material.divider.MaterialDivider
+<com.google.android.exoplayer2.ui.PlayerView
     android:id="@+id/recyclerVideo"
+    android:layout_margin="10dp"
     android:layout_width="120dp"
     android:layout_height="170dp"/>
     <TextView
+        android:id="@+id/groupTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"

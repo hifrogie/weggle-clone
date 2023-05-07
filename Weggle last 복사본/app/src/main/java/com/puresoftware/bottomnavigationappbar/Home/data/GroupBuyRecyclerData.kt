@@ -1,11 +1,12 @@
 package com.puresoftware.bottomnavigationappbar.Home.data
 
 import com.google.gson.JsonElement
+import com.google.gson.JsonPrimitive
 
-data class GroupBuyRecyclerData(val id:JsonElement?,
-                                val profileFile:JsonElement?,
-                                val thumbnail: JsonElement?,
-                                val resource:JsonElement?,
-                                val likeCount:JsonElement?,
-                                val commentCount:JsonElement?,
-                                val updateTime:JsonElement?)
+data class GroupBuyRecyclerData(val id: JsonPrimitive?,
+                                val profileFile:JsonPrimitive?,
+                                val thumbnail: JsonPrimitive?,
+                                val resource:JsonPrimitive?,
+                                val likeCount:JsonPrimitive?,
+                                val commentCount:JsonPrimitive?,
+                                val updateTime:JsonPrimitive?)
