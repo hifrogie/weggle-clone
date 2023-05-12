@@ -9,4 +9,5 @@ data class GroupBuyRecyclerData(val id: JsonPrimitive?,
                                 val resource:JsonPrimitive?,
                                 val likeCount:JsonPrimitive?,
                                 val commentCount:JsonPrimitive?,
-                                val updateTime:JsonPrimitive?)
+                                val updateTime:JsonPrimitive?,
+                                val title:String?)
