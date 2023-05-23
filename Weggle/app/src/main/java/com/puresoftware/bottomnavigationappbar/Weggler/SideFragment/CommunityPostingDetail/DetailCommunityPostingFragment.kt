@@ -3,10 +3,12 @@ package com.puresoftware.bottomnavigationappbar.Weggler.SideFragment.CommunityPo
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -28,6 +32,8 @@ import com.puresoftware.bottomnavigationappbar.Weggler.Manager.CommunityCommentM
 import com.puresoftware.bottomnavigationappbar.Weggler.Manager.CommunityManagerWithReview
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.Comment
 import com.puresoftware.bottomnavigationappbar.Weggler.Model.ReviewInCommunity
+import com.puresoftware.bottomnavigationappbar.Weggler.SwipeCardView.SwipeController
+import com.puresoftware.bottomnavigationappbar.Weggler.SwipeCardView.SwipeControllerActions
 import com.puresoftware.bottomnavigationappbar.Weggler.Unit.MessageFragment
 import com.puresoftware.bottomnavigationappbar.Weggler.Unit.getTimeText
 import com.puresoftware.bottomnavigationappbar.Weggler.Unit.isVideo
@@ -37,7 +43,7 @@ import java.text.DecimalFormat
 //type : MainFragment에서 왔다면 setMainViewVisibility (뷰 감추기 )
 class DetailCommunityPostingFragment : Fragment() {
     private var reviewId: Int = -1
-    private var parentComment : Int = 0
+    private var parentComment : Int = -1
     private var type: String? = null
     private var _binding: FragmentDetailCommunityPostingBinding? = null
     private val binding get() = _binding!!
@@ -164,6 +170,7 @@ class DetailCommunityPostingFragment : Fragment() {
                     }
 
                     initComment(posting.reviewId)
+                    setSwipe() // del button swipe
                     setUpListener(posting)
                 } else {
                     // 존재하지 않는 경우
@@ -348,7 +355,7 @@ class DetailCommunityPostingFragment : Fragment() {
                     text.toString(),
                     paramFunc = { newData, message ->
                         if (message == null) {
-                            if (parentComment!=0){ //자식 추가
+                            if (parentComment!=-1){ //자식 추가
                                 posting.commentCount = commentAdapter.addChildData(newData!!)
                             }else { //부모 추가
                                 posting.commentCount = commentAdapter.addData(newData!!)
@@ -359,14 +366,13 @@ class DetailCommunityPostingFragment : Fragment() {
                             mainActivity.communityViewModel.apply {
                                 addMyCommentData(newData)
                             }
-
+                            if (parentComment!=-1){ //자식 댓글 추가 상태면 제거
+                                cancelChildComment()
+                            }
                         } else {
                             Toast.makeText(mainActivity, message, Toast.LENGTH_SHORT).show()
                         }
                     })
-            }
-            if (parentComment!=0){ //자식 댓글 추가 상태면 제거
-                cancelChildComment()
             }
             setText("")
         }
@@ -374,10 +380,32 @@ class DetailCommunityPostingFragment : Fragment() {
 
     private fun cancelChildComment(){
         binding.childTextBox.visibility = View.GONE
-        parentComment = 0
+        parentComment = -1
     }
-    private fun delComment() {
 
+    // del comment swipe
+    private fun setSwipe(){
+        val swipeController = SwipeController()
+        swipeController.apply {
+            setButtonActionListener(object : SwipeControllerActions{
+                override fun onRightClicked(position: Int) {
+                    val isDelete = commentAdapter.delData(position,
+                    mainActivity.myAccountViewModel.userProfile?.name)
+                    if (isDelete!=null){ //삭제 성공
+                        communityComment.delComment(isDelete,reviewId, paramFunc = { _,_-> })
+                    }
+                }
+            })
+        }
+        // 스와이프 터치 리스너를 등록
+        val itemTouchHelper = ItemTouchHelper(swipeController)
+        itemTouchHelper.attachToRecyclerView(binding.commentListView.commentList)
+        // 버튼을 그려주는 동작
+        binding.commentListView.commentList.addItemDecoration(object : RecyclerView.ItemDecoration(){
+            override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+                swipeController.onDraw(c)
+            }
+        })
     }
 
     // Like or UnLike

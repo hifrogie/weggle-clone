@@ -101,5 +101,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
     //암 복호화
     implementation "androidx.security:security-crypto:1.1.0-alpha01"
+
+    // 카드뷰
+    implementation "androidx.cardview:cardview:1.0.0"
 }
 
