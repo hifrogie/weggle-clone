@@ -157,7 +157,7 @@ interface RetrofitService {
     fun getReviewCommentList(
         @Path("reviewId")reviewId : Int,
         @Query(value = "page", encoded = true) page: Int?,
-        @Query(value = "size", encoded = true) size: Int?,
+        @Query(value = "size", encoded = true) size: Int,
         @Query(value = "sort", encoded = true) sort: List<String>?,
     ) : Call<CommentList>
 
@@ -196,6 +196,13 @@ interface RetrofitService {
         @Path("commentId")commentId: Int,
         @Query(value = "like") like : Boolean,
     ):Call<String>
+
+    // del comment
+    @DELETE("reviews/{reviewId}/comments/{commentId}")
+    fun deleteComment(
+        @Path("reviewId")reviewId: Int,
+        @Path("commentId")commentId: Int,
+    ):Call<Int>
     /////////////////////////////////////////////'
 
 

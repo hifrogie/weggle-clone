@@ -32,7 +32,7 @@ class CommunityCommentManager(
 
     //리뷰 아이디로 댓글 가져오기
     fun getReviewCommentList(reviewId : Int,paramFunc: (ArrayList<Comment>?, String?) -> Unit){
-        wApp.service.getReviewCommentList(reviewId,null,null,null)
+        wApp.service.getReviewCommentList(reviewId,null,1000,null)
             .enqueue(object : Callback<CommentList>{
                 override fun onResponse(call: Call<CommentList>, response: Response<CommentList>) {
                     if (response.isSuccessful){
@@ -83,6 +83,24 @@ class CommunityCommentManager(
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     paramFunc(false)
                 }
+            })
+    }
+
+    fun delComment(commentId: Int,reviewId: Int,paramFunc: (Int?,String?) -> Unit){
+        wApp.service.deleteComment(reviewId, commentId)
+            .enqueue(object : Callback<Int>{
+                override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                    if (response.isSuccessful){
+                        paramFunc(response.body(),null)
+                    }else{
+                        paramFunc(null,response.errorBody().toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<Int>, t: Throwable) {
+                    paramFunc(null,"error")
+                }
+
             })
     }
 }
