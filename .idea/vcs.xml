@@ -4,5 +4,15 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Weggle-Weggler" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Weggle-Weggler/Weggle-Weggler" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/github TIL3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kozol2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kozol2 ect/GitHub3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kozol2 ect/git" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kozol2 ect/git-practice" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kozol2 ect/git-practice/Github" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kozol2 ect/git-practice/git2/git-practice" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kozol2 ect/github til" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kozol2 ect/kozoltime2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kozol2 ect/kozoltime2 2" vcs="Git" />
   </component>
 </project>

@@ -11,17 +11,18 @@ import com.smarteist.autoimageslider.SliderView
 
 class HomeFragment : Fragment() {
 
-    lateinit var binding : HomeFragmentBinding
+    lateinit var binding: HomeFragmentBinding
     lateinit var imageUrl: ArrayList<String>
     lateinit var sliderView: SliderView
     lateinit var sliderAdapter: SliderAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View? {
 //        val view: View = inflater.inflate(R.layout.home_fragment, container, false)
         binding = HomeFragmentBinding.inflate(inflater, container, false)
         sliderView = binding.slider
-
+        //test
         imageUrl = ArrayList()
 
         // on below line we are adding data to our image url array list.
