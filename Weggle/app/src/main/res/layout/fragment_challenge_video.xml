@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Weggler.AboutChallenge.ChallengeVideoFragment">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Weggler.AboutChallenge.ChallengeVideoFragment">
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_20"
+                android:text="챌린지 TOP5 리뷰 영상 🔥"
+                android:layout_margin="@dimen/margin_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <!--view-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:background="@color/line_color_light"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_10"/>
+
+            <TextView
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_20"
+                android:text="다른 챌린지 영상도 살펴보기👀"
+                android:layout_margin="@dimen/margin_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <!--view-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:background="@color/line_color_light"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_10"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/challenge_write_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="50dp"
+        android:backgroundTint="@color/black"
+        android:src="@drawable/ic_pencil"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@null" />
+</androidx.constraintlayout.widget.ConstraintLayout>
