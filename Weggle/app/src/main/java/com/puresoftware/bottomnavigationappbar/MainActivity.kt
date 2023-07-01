@@ -65,6 +65,10 @@ class MainActivity : AppCompatActivity() {
         masterApp.createRetrofit(this@MainActivity)
         //////////////////////
 
+        // System 생성
+        fragmentManager = supportFragmentManager // manager 호출
+        transaction = fragmentManager!!.beginTransaction() // 화면 전환 호출
+
         // user info init////
         UserManager(masterApp)
             .getUser(paramFun = { user,_->
@@ -110,9 +114,6 @@ class MainActivity : AppCompatActivity() {
             wegglerFragment = WegglerFragment()
             myAccountFragment = MyAccountFragment()
 
-            // System 생성
-            fragmentManager = supportFragmentManager // manager 호출
-            transaction = fragmentManager!!.beginTransaction() // 화면 전환 호출
             transaction!!.add(R.id.main_frame, centerWeggleFragment!!).commit() // 최초로 첫 화면 갱신
             binding.bottomNavi.menu.getItem(2)
                 .setChecked(true)
